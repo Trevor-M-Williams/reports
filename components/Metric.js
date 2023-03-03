@@ -15,9 +15,10 @@ function Metric({ category, value }) {
 
   useEffect(() => {
     setTimeout(() => {
+      circleRef.current.style.transition = "all 1s ease-in-out";
       circleRef.current.setAttribute("stroke", color);
       circleRef.current.setAttribute("stroke-dashoffset", offset);
-    }, 100);
+    }, 50);
   }, []);
 
   return (
