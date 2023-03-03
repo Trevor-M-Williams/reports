@@ -21,9 +21,9 @@ function Metric({ category, value }) {
   }, []);
 
   return (
-    <div className="w-1/2 h-1/2 flex flex-col items-center justify-center p-4">
-      <div className="relative h-4/5 max-w-[80%]">
-        <svg viewBox="0 0 100 100" className="h-full w-full">
+    <div className="w-1/2 flex flex-col items-center p-2 lg:px-8">
+      <div className="relative">
+        <svg viewBox="0 0 100 100" className="w-full">
           <clipPath id="clipPath">
             <circle cx="50" cy="50" r="45"></circle>
           </clipPath>
@@ -46,7 +46,7 @@ function Metric({ category, value }) {
           {value}
         </div>
       </div>
-      <div className="text-2xl mt-2">{category}</div>
+      <div className="text-2xl font-medium mt-2">{category}</div>
     </div>
   );
 }

@@ -1,13 +1,11 @@
-import React from "react";
-
 function TabBar({ tab, setTab }) {
   const bg = "bg-gray-200";
 
   return (
-    <div className="absolute z-10 top-5 left-1/2 -translate-x-1/2 w-1/2 max-w-xl border-2 border-gray-200 rounded-full flex overflow-hidden">
+    <div className="absolute z-10 top-[12vh] left-1/2 -translate-x-1/2 w-3/4 max-w-md border-2 border-gray-200 rounded-full flex text-lg font-medium overflow-hidden">
       <div
         onClick={() => setTab(0)}
-        className={`w-1/2 py-1 flex items-center justify-center border-r cursor-pointer ${
+        className={`w-1/2 py-[0.4rem] flex items-center justify-center border-r cursor-pointer ${
           tab === 0 ? bg : "bg-transparent"
         }`}
       >
@@ -15,7 +13,7 @@ function TabBar({ tab, setTab }) {
       </div>
       <div
         onClick={() => setTab(1)}
-        className={`w-1/2 py-1 flex items-center justify-center cursor-pointer ${
+        className={`w-1/2 flex items-center justify-center cursor-pointer ${
           tab === 1 ? bg : "bg-transparent"
         }`}
       >
