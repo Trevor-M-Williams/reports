@@ -4,7 +4,7 @@ export default function Home() {
       <input
         type="text"
         placeholder="Enter Your Company Name"
-        className="w-1/2 h-12 px-4 text-xl border border-gray-400 rounded-lg placeholder:text-center focus:outline-blue-500"
+        className="w-1/2 h-12 px-4 text-xl border border-gray-400 rounded-lg placeholder:text-center focus:border-blue-500"
       />
     </div>
   );
