@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+::-webkit-scrollbar {
+  width: 5px;
+  /* background-color: #ccc; */
+}
+::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
 html,
 body {
   padding: 0;
@@ -17,6 +26,12 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+circle {
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition: all 1s ease-in-out;
 }
 
 @media (prefers-color-scheme: dark) {
