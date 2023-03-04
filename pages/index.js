@@ -30,13 +30,13 @@ export default function Home() {
         ref={inputRef}
         className="absolute inset-0 flex flex-col items-center justify-center opacity-0 transition-opacity duration-500"
       >
-        <div className="flex">
+        <div className="flex flex-col items-center justify-center sm:flex-row">
           <input
             type="text"
             placeholder="Enter Your Website URL"
-            className="w-3/4 max-w-lg h-12 text-xl border border-gray-400 rounded focus:border-blue-500"
+            className="w-[60vw] max-w-2xl h-12 text-lg border border-gray-400 rounded placeholder:text-center focus:border-blue-500"
           />
-          <button className="ml-4 h-12 px-6 bg-[#0066ff] text-lg text-white hover:shadow rounded">
+          <button className="mt-4 sm:ml-4 sm:mt-0 h-12 px-6 bg-[#0066ff] text-lg text-white hover:shadow rounded">
             Analyze
           </button>
         </div>
