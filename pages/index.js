@@ -21,7 +21,9 @@ export default function Home() {
       }
       return;
     }
-    inputRef.current.classList.remove("opacity-0");
+    setTimeout(() => {
+      inputRef.current.classList.remove("opacity-0");
+    }, 500);
   }, [router.query]);
 
   if (!data)
