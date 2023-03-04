@@ -2,12 +2,14 @@ import { Accordion } from "flowbite-react";
 
 function Suggestions({ data }) {
   return (
-    <div className="h-[65vh] w-full max-w-2xl mx-auto px-4  overflow-auto">
+    <div className="h-[65vh] w-[100vw] max-w-2xl mx-auto px-4 overflow-auto">
       <Accordion flush={true} collapseAll={true}>
         {data.opportunities.map((item, index) => (
           <Accordion.Panel key={index}>
-            <Accordion.Title>{item.title}</Accordion.Title>
-            <Accordion.Content>
+            <Accordion.Title className="text-lg sm:text-xl md:text-2xl">
+              {item.title}
+            </Accordion.Title>
+            <Accordion.Content className="md:text-lg">
               <p className="mb-2 text-gray-500 dark:text-gray-400">
                 {item.description}
               </p>

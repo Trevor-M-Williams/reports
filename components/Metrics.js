@@ -7,11 +7,15 @@ function Metrics({ data }) {
   const seo = data.seo * 100;
 
   return (
-    <div className="h-[65vh] w-full max-w-lg mx-auto flex flex-wrap items-center px-2 select-none">
-      <Metric category="Performance" value={performance} />
-      <Metric category="Accessibility" value={accessibility} />
-      <Metric category="Best Practices" value={bestPractices} />
-      <Metric category="SEO" value={seo} />
+    <div className="lg:h-full flex flex-col justify-center px-2 select-none">
+      <div className="flex justify-center">
+        <Metric category="Performance" value={performance} />
+        <Metric category="Accessibility" value={accessibility} />
+      </div>
+      <div className="flex justify-center">
+        <Metric category="Best Practices" value={bestPractices} />
+        <Metric category="SEO" value={seo} />
+      </div>
     </div>
   );
 }

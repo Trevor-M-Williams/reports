@@ -1,7 +1,9 @@
 import React from "react";
 
 function Tabs({ children }) {
-  return <div className="flex max-w-2xl overflow-hidden">{children}</div>;
+  return (
+    <div className="flex lg:h-[70vh] max-w-4xl overflow-hidden">{children}</div>
+  );
 }
 
 export default Tabs;
