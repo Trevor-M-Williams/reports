@@ -22,7 +22,7 @@ function Metric({ category, value }) {
   }, []);
 
   return (
-    <div className="w-1/2 flex flex-col items-center p-2 lg:px-8">
+    <div className="w-1/2 flex flex-col items-center p-2 sm:px-10">
       <div className="relative">
         <svg viewBox="0 0 100 100" className="w-full">
           <clipPath id="clipPath">
@@ -33,7 +33,7 @@ function Metric({ category, value }) {
             clipPath="url(#clipPath)"
             fill="#eee"
             strokeWidth="10"
-            pathLength="0.99"
+            pathLength="1"
             cx="50"
             cy="50"
             r="45"

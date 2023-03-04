@@ -1,9 +1,8 @@
 import { Accordion } from "flowbite-react";
-import { data } from "./data";
 
-function Opportunities() {
+function Suggestions({ data }) {
   return (
-    <div className="max-h-full w-full max-w-2xl mx-auto px-4 overflow-auto">
+    <div className="h-[65vh] w-full max-w-2xl mx-auto px-4  overflow-auto">
       <Accordion flush={true} collapseAll={true}>
         {data.opportunities.map((item, index) => (
           <Accordion.Panel key={index}>
@@ -24,4 +23,4 @@ function Opportunities() {
   );
 }
 
-export default Opportunities;
+export default Suggestions;

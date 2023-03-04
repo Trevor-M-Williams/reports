@@ -1,23 +1,28 @@
 import { useState } from "react";
 import Nav from "./Nav";
+import Tabs from "./Tabs";
 import Tab from "./Tab";
 import TabBar from "./TabBar";
+import Title from "./Title";
 import Metrics from "./Metrics";
-import Opportunities from "./Opportunities";
+import Suggestions from "./Suggestions";
 
-function Report() {
+function Report({ data }) {
   const [tab, setTab] = useState(0);
 
   return (
-    <div className="absolute inset-0 pt-[22vh] pb-[10vh] flex overflow-hidden">
+    <div className="absolute inset-0 x-2 py-8 flex flex-col items-center overflow-hidden">
       <Nav />
+      <Title url={data.url} />
       <TabBar tab={tab} setTab={setTab} />
-      <Tab tab={tab}>
-        <Metrics />
-      </Tab>
-      <Tab tab={tab}>
-        <Opportunities />
-      </Tab>
+      <Tabs>
+        <Tab tab={tab}>
+          <Metrics data={data} />
+        </Tab>
+        <Tab tab={tab}>
+          <Suggestions data={data} />
+        </Tab>
+      </Tabs>
     </div>
   );
 }
