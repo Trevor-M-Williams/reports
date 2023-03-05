@@ -7,11 +7,11 @@ function Nav() {
       <div className="w-full max-w-3xl mx-auto flex items-center justify-between">
         <Logo />
         <a
-          href="tel:3035780518"
-          className="flex items-center text-xl text-[#00549c]"
+          href="#"
+          // target="_blank"
+          className="border border-[#00549c] px-4 py-2 rounded-md text-[#00549c] hover:bg-[#00549c] hover:text-white transition duration-300 ease-in-out"
         >
-          <BiPhone className="mr-2" />
-          {/* <p>303.578.0518</p> */}
+          Get In Touch
         </a>
       </div>
     </div>
