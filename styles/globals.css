@@ -4,7 +4,6 @@
 
 ::-webkit-scrollbar {
   width: 5px;
-  /* background-color: #ccc; */
 }
 ::-webkit-scrollbar-thumb {
   background-color: #ccc;
@@ -31,14 +30,4 @@ a {
 circle {
   transform: rotate(-90deg);
   transform-origin: center;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
 }
