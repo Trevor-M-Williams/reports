@@ -11,7 +11,7 @@ function Nav() {
           className="flex items-center text-xl text-[#00549c]"
         >
           <BiPhone className="mr-2" />
-          <p>303.578.0518</p>
+          {/* <p>303.578.0518</p> */}
         </a>
       </div>
     </div>
