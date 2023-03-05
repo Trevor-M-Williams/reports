@@ -11,7 +11,7 @@ function Report({ data }) {
   const [tab, setTab] = useState(0);
 
   return (
-    <div className="absolute inset-0 x-2 pt-[5vh] sm:pt-[3vh] flex flex-col items-center overflow-hidden">
+    <div className="absolute inset-0 x-2 pt-[2vh] flex flex-col items-center overflow-hidden">
       <Nav />
       <Title url={data.url} />
       <TabBar tab={tab} setTab={setTab} />
