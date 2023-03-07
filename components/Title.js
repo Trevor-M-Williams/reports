@@ -1,7 +1,7 @@
 function Title({ url }) {
   let textSize = "text-xl";
-  if (url.length > 40) textSize = "text-md";
-  else if (url.length > 30) textSize = "text-lg";
+  if (url.length > 35) textSize = "text-md";
+  else if (url.length > 25) textSize = "text-lg";
 
   return (
     <div
