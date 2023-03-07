@@ -6,13 +6,10 @@ function Nav() {
     <div className="w-full px-4">
       <div className="w-full max-w-3xl mx-auto flex items-center justify-between">
         <Logo />
-        <a
-          href="tel:3035780518"
-          className="flex items-center text-xl text-[#00549c]"
-        >
+        <div className="flex items-center text-xl text-[#00549c]">
           <BiPhone className="mr-2" />
-          <p>303.578.0518</p>
-        </a>
+          <a href="tel:3035780518">303.578.0518</a>
+        </div>
       </div>
     </div>
   );
