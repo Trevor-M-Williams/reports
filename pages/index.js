@@ -6,6 +6,7 @@ import { database } from "../components/database";
 export default function Home() {
   const router = useRouter();
   const [data, setData] = useState();
+  const [start, setStart] = useState(Date.now());
   const inputRef = useRef();
 
   useEffect(() => {
@@ -20,6 +21,7 @@ export default function Home() {
       }
       return;
     }
+    setData(false);
     inputRef.current.classList.remove("opacity-0");
   }, [router.query]);
 

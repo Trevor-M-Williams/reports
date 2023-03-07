@@ -1,10 +1,10 @@
 import Metric from "./Metric";
 
 function Metrics({ data }) {
-  const performance = data.performance * 100;
-  const accessibility = data.accessibility * 100;
-  const bestPractices = data.bestPractices * 100;
-  const seo = data.seo * 100;
+  const performance = Math.round(data.performance * 100);
+  const accessibility = Math.round(data.accessibility * 100);
+  const bestPractices = Math.round(data.bestPractices * 100);
+  const seo = Math.round(data.seo * 100);
 
   return (
     <div className="lg:h-full flex flex-col justify-center px-2 select-none">
