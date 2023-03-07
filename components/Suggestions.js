@@ -14,8 +14,8 @@ function Suggestions({ data }) {
                 {item.description}
               </p>
               <p className="text-gray-800 dark:text-gray-400">
-                <span className="font-semibold">Savings:</span> {item.savings}{" "}
-                ms
+                <span className="font-semibold">Savings:</span>{" "}
+                {Math.round(item.savings)} ms
               </p>
             </Accordion.Content>
           </Accordion.Panel>
