@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { postReport } from "../firebase";
 
 function FileInput() {
   const [dragging, setDragging] = useState(false);
   const [files, setFiles] = useState([]);
+  const [message, setMessage] = useState();
+  const [messageColor, setMessageColor] = useState();
+  const numUploaded = useRef(0);
 
   useEffect(() => {
     console.log(files);
@@ -36,8 +40,68 @@ function FileInput() {
     setFiles(newFiles);
   }
 
+  // function handleCSV(data) {
+  //   let rows = data.split("\n");
+  //   rows.map(async (row, i) => {
+  //     if (i === 0) return;
+  //     let url = row.split(",")[0];
+  //     if (url) {
+  //       url = url.replace("http:", "https:").trim();
+  //       let report = await generateReport(url);
+  //       if (report) {
+  //         postReport(report);
+  //         numUploaded.current++;
+  //         console.log(numUploaded.current);
+  //         setMessage(`Uploaded ${numUploaded.current} of ${rows.length}`);
+  //       } else console.log("Error: " + url);
+  //     }
+  //   });
+  // }
+
+  // function handleFileSelect(file) {
+  //   setFile(file);
+  //   setMessage("");
+  // }
+
+  // function handleUpload() {
+  //   if (!file) {
+  //     setMessage("Please select a file");
+  //     setMessageColor("text-red-700");
+  //     return;
+  //   }
+  //   if (file.type !== "text/csv") {
+  //     setMessage("File must be a CSV");
+  //     setMessageColor("text-red-700");
+  //     return;
+  //   }
+  //   setMessage("Uploading...");
+  //   setMessageColor("text-gray-700");
+  //   const reader = new FileReader();
+  //   reader.addEventListener("load", (event) => {
+  //     const result = event.target.result;
+  //     handleCSV(result);
+  //   });
+  //   reader.readAsText(file);
+  // }
+
+  // async function generateReport(url) {
+  //   try {
+  //     const res = await fetch("/api/reports?url=" + url);
+  //     const data = await res.json();
+  //     return data;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  // async function testAPI() {
+  //   const res = await fetch("/api/reports?url=https://www.google.com");
+  //   const data = await res.json();
+  //   console.log(data);
+  // }
+
   return (
-    <div className="max-w-lg mx-auto">
+    <div className="w-full max-w-lg">
       <div
         className={`border-dashed border-2 rounded-md py-10 text-center ${
           dragging ? "border-blue-500" : "border-gray-200"
@@ -69,12 +133,12 @@ function FileInput() {
             key={index}
             className="flex justify-between items-center p-2 text-xl border-b"
           >
-            <div className="text-gray-900">
+            <div>
               <p>{file.name}</p>
             </div>
             <button
               onClick={() => handleRemoveFileClick(index)}
-              className="h-5 w-5"
+              className="h-5 w-5 shrink-0"
             >
               <svg fill="#333" width="100%" height="100%" viewBox="0 0 24 24">
                 <path d="M20 8.70007H4C3.90151 8.70007 3.80398 8.68067 3.71299 8.64298C3.62199 8.60529 3.53931 8.55005 3.46967 8.4804C3.40003 8.41076 3.34478 8.32808 3.30709 8.23709C3.2694 8.14609 3.25 8.04856 3.25 7.95007C3.25 7.85158 3.2694 7.75405 3.30709 7.66306C3.34478 7.57207 3.40003 7.48939 3.46967 7.41974C3.53931 7.3501 3.62199 7.29486 3.71299 7.25716C3.80398 7.21947 3.90151 7.20007 4 7.20007H20C20.1989 7.20007 20.3897 7.27909 20.5303 7.41974C20.671 7.5604 20.75 7.75116 20.75 7.95007C20.75 8.14899 20.671 8.33975 20.5303 8.4804C20.3897 8.62106 20.1989 8.70007 20 8.70007Z" />

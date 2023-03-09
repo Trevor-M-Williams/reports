@@ -1,95 +1,64 @@
-import { useEffect, useRef, useState } from "react";
-import { postReport } from "../firebase";
+import { useEffect, useState } from "react";
+import { getDatabase, onValue, ref, set } from "firebase/database";
+import FileInput from "../components/FileInput";
+import { H1, H2, H3, P } from "../components/Typography";
 
 function Dashboard() {
-  const [file, setFile] = useState();
-  const [message, setMessage] = useState();
-  const [messageColor, setMessageColor] = useState();
-  const numUploaded = useRef(0);
+  const [reports, setReports] = useState([]);
+  const statusColors = ["bg-gray-200", "bg-green-500", "bg-yellow-300"];
 
-  function handleCSV(data) {
-    let rows = data.split("\n");
-    rows.map(async (row, i) => {
-      if (i === 0) return;
-      let url = row.split(",")[0];
-      if (url) {
-        url = url.replace("http:", "https:").trim();
-        let report = await generateReport(url);
-        if (report) {
-          postReport(report);
-          numUploaded.current++;
-          console.log(numUploaded.current);
-          setMessage(`Uploaded ${numUploaded.current} of ${rows.length}`);
-        } else console.log("Error: " + url);
+  useEffect(() => {
+    const db = getDatabase();
+    const reportsRef = ref(db, "reports/");
+
+    onValue(
+      reportsRef,
+      (snapshot) => {
+        const reportsData = snapshot.val();
+        if (reportsData) {
+          const reportsList = Object.values(reportsData);
+          setReports(reportsList);
+        }
+      },
+      (error) => {
+        console.log("The read failed: " + error.name);
       }
-    });
-  }
+    );
+  }, []);
 
-  function handleFileSelect(file) {
-    setFile(file);
-    setMessage("");
-  }
+  useEffect(() => {
+    console.log(reports[0]);
+  }, [reports]);
 
-  function handleUpload() {
-    if (!file) {
-      setMessage("Please select a file");
-      setMessageColor("text-red-700");
-      return;
-    }
-    if (file.type !== "text/csv") {
-      setMessage("File must be a CSV");
-      setMessageColor("text-red-700");
-      return;
-    }
-    setMessage("Uploading...");
-    setMessageColor("text-gray-700");
-    const reader = new FileReader();
-    reader.addEventListener("load", (event) => {
-      const result = event.target.result;
-      handleCSV(result);
-    });
-    reader.readAsText(file);
-  }
-
-  async function generateReport(url) {
-    try {
-      const res = await fetch("/api/reports?url=" + url);
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function testAPI() {
-    const res = await fetch("/api/reports?url=https://www.google.com");
-    const data = await res.json();
-    console.log(data);
+  function changeStatus(i) {
+    const db = getDatabase();
+    const reportsRef = ref(db, `reports/${reports[i].id}`);
+    const newStatus = reports[i].status === 2 ? 0 : reports[i].status + 1;
+    reportsRef.update({ status: newStatus });
   }
 
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center">
-      <div className="flex">
-        <input
-          type="file"
-          placeholder="Enter a URL"
-          onChange={(e) => handleFileSelect(e.target.files[0])}
-          className="h-10 w-[60vw] max-w-lg rounded-l border"
-        />
-        <button
-          onClick={handleUpload}
-          className="h-10 bg-blue-200 px-4 rounded-r hover:bg-blue-300"
-        >
-          Upload
-        </button>
-      </div>
-      <div className={`relative top-4 ${messageColor}`}>{message}</div>
-      <button
-        onClick={testAPI}
-        className="relative top-8 bg-blue-200 px-4 py-1 rounded"
-      >
-        Test
-      </button>
+    <div className="max-w-3xl mx-auto p-2">
+      {reports.length === 0 && <FileInput />}
+      {reports.length > 0 && (
+        <div>
+          <H1 text="Reports" />
+          {reports.map((report, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between border rounded p-2 my-1"
+            >
+              <div>{report.url}</div>
+              <div
+                onClick={() => changeStatus(i)}
+                className={`h-5 w-5 shrink-0 border- border-white outline outline-1 outline-gray-500 rounded-full  ${
+                  statusColors[parseInt(report.status)]
+                }`}
+              ></div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
