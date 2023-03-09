@@ -7,54 +7,14 @@ function Dashboard() {
   const [messageColor, setMessageColor] = useState();
   const numUploaded = useRef(0);
 
-  useEffect(() => {
-    console.log(numUploaded.current);
-  });
-
-  function generateReport(data) {
-    if (!data) return;
-    if (!data.lighthouseResult) return;
-    if (!data.lighthouseResult.audits) return;
-
-    let opportunities = [];
-    let keys = Object.keys(data.lighthouseResult.audits);
-
-    keys.forEach((key) => {
-      let item = data.lighthouseResult.audits[key];
-      let title = item.title;
-      let description = item.description.split("[Learn more]")[0].trim();
-      let savings = item.numericValue;
-      let score = item.score;
-      let details = item.details;
-      if (savings && details && details.type === "opportunity" && score < 0.9) {
-        opportunities.push({ title, description, savings });
-      }
-    });
-
-    opportunities.sort((a, b) => b.savings - a.savings);
-
-    let report = {
-      url: data.lighthouseResult.finalUrl,
-      performance: data.lighthouseResult.categories.performance.score,
-      accessibility: data.lighthouseResult.categories.accessibility.score,
-      bestPractices: data.lighthouseResult.categories["best-practices"].score,
-      seo: data.lighthouseResult.categories.seo.score,
-      opportunities,
-    };
-
-    return report;
-  }
-
   function handleCSV(data) {
     let rows = data.split("\n");
     rows.map(async (row, i) => {
       if (i === 0) return;
-      if (i > 10) return;
       let url = row.split(",")[0];
       if (url) {
         url = url.replace("http:", "https:").trim();
-        let data = await runPageSpeedTest(url);
-        let report = generateReport(data);
+        let report = await generateReport(url);
         if (report) {
           postReport(report);
           numUploaded.current++;
@@ -91,13 +51,12 @@ function Dashboard() {
     reader.readAsText(file);
   }
 
-  async function runPageSpeedTest(url) {
+  async function generateReport(url) {
     try {
       const res = await fetch("/api/reports?url=" + url);
       const data = await res.json();
       return data;
     } catch (error) {
-      console.log("Error: " + url);
       console.log(error);
     }
   }
