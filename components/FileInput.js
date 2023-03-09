@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function DragAndDropFileInput() {
+function FileInput() {
   const [dragging, setDragging] = useState(false);
   const [files, setFiles] = useState([]);
 
@@ -90,4 +90,4 @@ function DragAndDropFileInput() {
   );
 }
 
-export default DragAndDropFileInput;
+export default FileInput;
