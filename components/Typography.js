@@ -1,6 +1,6 @@
 export function H1({ text, styles }) {
   return (
-    <h1 className={`text-3xl font-medium mb-4 ${styles ? styles : ""}`}>
+    <h1 className={`mb-4 text-3xl font-medium ${styles ? styles : ""}`}>
       {text}
     </h1>
   );

@@ -7,7 +7,7 @@ function Metrics({ data }) {
   const seo = Math.round(data.seo * 100);
 
   return (
-    <div className="lg:h-full flex flex-col justify-center px-2 select-none">
+    <div className="flex select-none flex-col justify-center px-2 lg:h-full">
       <div className="flex justify-center">
         <Metric category="Performance" value={performance} />
         <Metric category="Accessibility" value={accessibility} />

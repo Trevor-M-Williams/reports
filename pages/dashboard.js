@@ -38,7 +38,7 @@ function Dashboard() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-2">
+    <div className="mx-auto max-w-3xl p-2">
       {reports.length === 0 && <FileInput />}
       {reports.length > 0 && (
         <div>
@@ -46,12 +46,12 @@ function Dashboard() {
           {reports.map((report, i) => (
             <div
               key={i}
-              className="flex items-center justify-between border rounded p-2 my-1"
+              className="my-1 flex items-center justify-between rounded border p-2"
             >
               <div>{report.url}</div>
               <div
                 onClick={() => changeStatus(i)}
-                className={`h-5 w-5 shrink-0 border- border-white outline outline-1 outline-gray-500 rounded-full  ${
+                className={`border- h-5 w-5 shrink-0 rounded-full border-white outline outline-1 outline-gray-500  ${
                   statusColors[parseInt(report.status)]
                 }`}
               ></div>

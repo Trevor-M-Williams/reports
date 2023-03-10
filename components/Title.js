@@ -5,10 +5,10 @@ function Title({ url }) {
 
   return (
     <div
-      className={`flex flex-col justify-center mt-[2vh] ${textSize} sm:text-xl text-center`}
+      className={`mt-[2vh] flex flex-col justify-center ${textSize} text-center sm:text-xl`}
     >
       <div className="flex">
-        <div className="font-medium mr-2">Domain:</div>
+        <div className="mr-2 font-medium">Domain:</div>
         <a href={url} target="_blank" className="text-blue-700">
           {url}
         </a>

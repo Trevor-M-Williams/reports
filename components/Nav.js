@@ -4,7 +4,7 @@ import { BiPhone } from "react-icons/bi";
 function Nav() {
   return (
     <div className="w-full px-4">
-      <div className="w-full max-w-3xl mx-auto flex items-center justify-between">
+      <div className="mx-auto flex w-full max-w-3xl items-center justify-between">
         <Logo />
         <div className="flex items-center text-xl text-[#00549c]">
           <BiPhone className="mr-2" />

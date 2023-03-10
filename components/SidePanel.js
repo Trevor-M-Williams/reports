@@ -6,7 +6,7 @@ function SidePanel({ open, setOpen }) {
 
   return (
     <div
-      className={`absolute inset-y-0 right-0 w-1/2 max-w-xl bg-white shadow-xl transition-transform ease-in-out duration-500 ${transform}`}
+      className={`absolute inset-y-0 right-0 w-1/2 max-w-xl bg-white shadow-xl transition-transform duration-500 ease-in-out ${transform}`}
     >
       <button onClick={() => setOpen(false)}>X</button>
     </div>

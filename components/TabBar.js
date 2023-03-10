@@ -2,10 +2,10 @@ function TabBar({ tab, setTab }) {
   const bg = "bg-gray-200";
 
   return (
-    <div className="w-3/4 max-w-md mt-6 mb-4 border-2 border-gray-200 rounded-full flex text-lg font-medium overflow-hidden">
+    <div className="mt-6 mb-4 flex w-3/4 max-w-md overflow-hidden rounded-full border-2 border-gray-200 text-lg font-medium">
       <div
         onClick={() => setTab(0)}
-        className={`w-1/2 py-[0.4rem] flex items-center justify-center border-r cursor-pointer ${
+        className={`flex w-1/2 cursor-pointer items-center justify-center border-r py-[0.4rem] ${
           tab === 0 ? bg : "bg-transparent"
         }`}
       >
@@ -13,7 +13,7 @@ function TabBar({ tab, setTab }) {
       </div>
       <div
         onClick={() => setTab(1)}
-        className={`w-1/2 flex items-center justify-center cursor-pointer ${
+        className={`flex w-1/2 cursor-pointer items-center justify-center ${
           tab === 1 ? bg : "bg-transparent"
         }`}
       >

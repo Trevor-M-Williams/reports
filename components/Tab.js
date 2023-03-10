@@ -5,7 +5,7 @@ function Tab({ children, tab, bg }) {
   if (tab === 1) transition = "-translate-x-full";
   return (
     <div
-      className={`w-full transition-transform duration-500 shrink-0 ${transition} ${bg}`}
+      className={`w-full shrink-0 transition-transform duration-500 ${transition} ${bg}`}
     >
       {children}
     </div>

@@ -2,7 +2,7 @@ import { Accordion } from "flowbite-react";
 
 function Suggestions({ data }) {
   return (
-    <div className="h-[65vh] w-[100vw] max-w-2xl mx-auto pb-4` overflow-auto">
+    <div className="pb-4` mx-auto h-[65vh] w-[100vw] max-w-2xl overflow-auto">
       <Accordion flush={true} collapseAll={true}>
         {data.opportunities.map((item, index) => (
           <Accordion.Panel key={index}>

@@ -22,7 +22,7 @@ function Metric({ category, value }) {
   }, []);
 
   return (
-    <div className="mx-[2%] md:mx[5%] flex flex-col items-center py-4 sm:py-2">
+    <div className="md:mx[5%] mx-[2%] flex flex-col items-center py-4 sm:py-2">
       <div className="relative">
         <svg viewBox="0 0 100 100" style={{ height: "min(25vh, 40vw)" }}>
           <clipPath id="clipPath">
@@ -42,7 +42,7 @@ function Metric({ category, value }) {
           ></circle>
         </svg>
         <div
-          className={`absolute inset-0 flex items-center justify-center text-5xl sm:text-[6vh] text-gray-700 font-medium`}
+          className={`absolute inset-0 flex items-center justify-center text-5xl font-medium text-gray-700 sm:text-[6vh]`}
         >
           {value}
         </div>
