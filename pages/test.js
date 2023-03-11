@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import DashboardNav from "../components/DashboardNav";
+import ReportsTable from "../components/ReportsTable";
 import FileInput from "../components/FileInput";
 import SidePanel from "../components/SidePanel";
-import DashboardNav from "../components/DashboardNav";
 
 const Test = () => {
   const [reports, setReports] = useState([]);
-  const [sidePanelOpen, setSidePanelOpen] = useState(false);
+  const [currentReport, setCurrentReport] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
 
   useEffect(() => {
@@ -13,7 +14,7 @@ const Test = () => {
   }, [reports]);
 
   return (
-    <div className="absolute inset-0">
+    <div className="absolute inset-0 px-6">
       <DashboardNav setUploadOpen={setUploadOpen} />
       <FileInput
         reports={reports}
@@ -21,11 +22,15 @@ const Test = () => {
         uploadOpen={uploadOpen}
         setUploadOpen={setUploadOpen}
       />
-      {reports.map((report, i) => (
-        <div key={i}>
-          <h1>{report.url}</h1>
-        </div>
-      ))}
+      {reports.length > 0 && (
+        <>
+          <ReportsTable reports={reports} setCurrentReport={setCurrentReport} />
+          <SidePanel
+            currentReport={currentReport}
+            setCurrentReport={setCurrentReport}
+          />
+        </>
+      )}
     </div>
   );
 };
