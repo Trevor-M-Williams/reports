@@ -21,6 +21,21 @@ function FileInput({ reports, setReports, uploadOpen, setUploadOpen }) {
     }
   }, [loading]);
 
+  async function generateReport(url) {
+    try {
+      const res = await fetch("/api/reports?url=" + url);
+      const report = await res.json();
+      return report;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function generateTestData() {
+    setReports(database);
+    setUploadOpen(false);
+  }
+
   function handleDragEnter(e) {
     e.preventDefault();
     setDragging(true);
@@ -83,21 +98,6 @@ function FileInput({ reports, setReports, uploadOpen, setUploadOpen }) {
       handleCSV(result);
     });
     reader.readAsText(file);
-  }
-
-  async function generateReport(url) {
-    try {
-      const res = await fetch("/api/reports?url=" + url);
-      const report = await res.json();
-      return report;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  function generateTestData() {
-    setReports(database);
-    setUploadOpen(false);
   }
 
   return (

@@ -9,36 +9,31 @@ const ReportsTable = ({ reports, setCurrentReport }) => {
   }
 
   function hideButton(i) {
-    if (!reportBodyRef.current.children[i]) return;
-    if (!reportBodyRef.current.children[i].children[0]) return;
-    if (!reportBodyRef.current.children[i].children[0].children[1]) return;
-    reportBodyRef.current.children[i].children[0].children[1].classList.add(
-      "hidden"
-    );
+    let sidePanelBtns = document.querySelectorAll(".sidePanelBtn");
+    sidePanelBtns[i].classList.add("hidden");
   }
 
   function showButton(i) {
-    if (!reportBodyRef.current.children[i].children[0]) return;
-    if (!reportBodyRef.current.children[i].children[0].children[1]) return;
-    reportBodyRef.current.children[i].children[0].children[1].classList.remove(
-      "hidden"
-    );
+    let sidePanelBtns = document.querySelectorAll(".sidePanelBtn");
+    sidePanelBtns[i].classList.remove("hidden");
   }
 
   return (
-    <div className="h-[80vh] w-full overflow-auto">
-      <table className="mx-auto w-full max-w-5xl ">
+    <div className="mx-auto w-full max-w-5xl grow overflow-auto">
+      <table className="text-sm md:text-base lg:text-lg">
         <thead className="sticky top-0 z-10 bg-white">
           <tr>
-            <th className="px-4 py-1 text-left">URL</th>
-            <th className="px-4 py-1 ">Score</th>
-            <th className="px-4 py-1 ">Status</th>
+            <th className="py-1 px-2 md:px-4">ID</th>
+            <th className="px-2 py-1 text-left md:px-4">URL</th>
+            <th className="px-2 py-1 md:px-4 ">Score</th>
+            <th className="px-2 py-1 md:px-4 ">Status</th>
             <div className="absolute inset-x-0 bottom-0 h-px bg-black"></div>
           </tr>
         </thead>
         <tbody ref={reportBodyRef}>
           {reports.map((report, i) => (
             <tr key={i}>
+              <td className="w-[5%] border border-l-0 text-center">{i + 1}</td>
               <td
                 onMouseEnter={() => {
                   showButton(i);
@@ -46,12 +41,12 @@ const ReportsTable = ({ reports, setCurrentReport }) => {
                 onMouseLeave={() => {
                   hideButton(i);
                 }}
-                className="relative mx-2 border border-l-0 border-r-0 px-4 py-2 "
+                className="relative mx-2 border border-l-0 border-r-0 px-2 py-2 md:px-4"
               >
                 <div>{report.url}</div>
                 <div
                   onClick={() => handleButtonClick(i)}
-                  className="absolute top-2 bottom-2 right-4 flex hidden cursor-pointer items-center rounded bg-white px-2 text-xs shadow hover:bg-gray-100"
+                  className="sidePanelBtn absolute top-2 bottom-2 right-4 flex hidden cursor-pointer items-center rounded bg-white px-2 text-xs shadow hover:bg-gray-100"
                 >
                   <svg
                     viewBox="0 0 16 16"
@@ -65,12 +60,10 @@ const ReportsTable = ({ reports, setCurrentReport }) => {
                   OPEN
                 </div>
               </td>
-              <td className="w-[15%] border px-4 py-2 text-center">
+              <td className="border text-center md:w-[10%]">
                 {Math.round(report.performance * 100)}
               </td>
-              <td className="w-[15%] border border-r-0  px-4 py-2 text-center">
-                Status
-              </td>
+              <td className="border border-r-0 text-center md:w-[10%]">O</td>
             </tr>
           ))}
         </tbody>

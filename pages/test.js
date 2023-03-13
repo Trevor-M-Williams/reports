@@ -14,7 +14,7 @@ const Test = () => {
   }, [reports]);
 
   return (
-    <div className="absolute inset-0 px-6">
+    <div className="absolute inset-0 flex flex-col px-2 py-4 md:p-6">
       <DashboardNav setUploadOpen={setUploadOpen} />
       <FileInput
         reports={reports}
