@@ -1,11 +1,20 @@
 import { useRef } from "react";
+import { postReport } from "../firebase";
 
 const ReportsTable = ({ reports, setCurrentReport }) => {
   const reportBodyRef = useRef();
+  const statusColors = ["bg-white", "bg-green-500", "bg-red-500"];
 
   function handleButtonClick(i) {
     setCurrentReport(reports[i]);
     hideButton(i);
+  }
+
+  function handleStatus(i) {
+    let newStatus = reports[i].status + 1;
+    if (newStatus > 2) newStatus = 0;
+    let newReport = { ...reports[i], status: newStatus };
+    postReport(newReport);
   }
 
   function hideButton(i) {
@@ -43,7 +52,7 @@ const ReportsTable = ({ reports, setCurrentReport }) => {
                 }}
                 className="relative mx-2 border border-l-0 border-r-0 px-2 py-2 md:px-4"
               >
-                <div>{report.url}</div>
+                <div className="select-none">{report.url}</div>
                 <div
                   onClick={() => handleButtonClick(i)}
                   className="sidePanelBtn absolute top-2 bottom-2 right-4 flex hidden cursor-pointer items-center rounded bg-white px-2 text-xs shadow hover:bg-gray-100"
@@ -63,7 +72,16 @@ const ReportsTable = ({ reports, setCurrentReport }) => {
               <td className="border text-center md:w-[10%]">
                 {Math.round(report.performance * 100)}
               </td>
-              <td className="border border-r-0 text-center md:w-[10%]">O</td>
+              <td className={`border border-r-0 md:w-[10%]`}>
+                <div className="flex h-full w-full items-center justify-center">
+                  <div
+                    onClick={() => handleStatus(i)}
+                    className={`h-4 w-4 cursor-pointer rounded-full border-2 border-white outline outline-1 outline-gray-700 ${
+                      statusColors[report.status]
+                    }`}
+                  ></div>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>

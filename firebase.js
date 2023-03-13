@@ -14,6 +14,25 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
+export function getReports(setReports) {
+  const db = getDatabase();
+  const reportsRef = ref(db, "reports/");
+
+  onValue(
+    reportsRef,
+    (snapshot) => {
+      const reportsData = snapshot.val();
+      if (reportsData) {
+        const reportsList = Object.values(reportsData);
+        setReports(reportsList);
+      }
+    },
+    (error) => {
+      console.log("The read failed: " + error.name);
+    }
+  );
+}
+
 export function postReport(data) {
   if (!data) return;
   if (!data.url) return;

@@ -1,3 +1,5 @@
+import { postReport } from "../../firebase";
+
 export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
@@ -7,6 +9,7 @@ export default async function handler(req, res) {
       );
       const data = await response.json();
       const report = handleData(data);
+      postReport(report);
       res.status(200).json(report);
     } catch (error) {
       res.status(500).json({ error });
@@ -42,6 +45,7 @@ function handleData(data) {
     bestPractices: data.lighthouseResult.categories["best-practices"].score,
     seo: data.lighthouseResult.categories.seo.score,
     opportunities,
+    status: 0,
   };
 
   return report;

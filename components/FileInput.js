@@ -11,6 +11,10 @@ function FileInput({ reports, setReports, uploadOpen, setUploadOpen }) {
   const opacity = uploadOpen ? "opacity-100" : "opacity-0 pointer-events-none";
 
   useEffect(() => {
+    console.log(file);
+  }, [file]);
+
+  useEffect(() => {
     if (loading) {
       let interval = setInterval(() => {
         setPercent((percent) => percent + 0.1);
@@ -27,7 +31,7 @@ function FileInput({ reports, setReports, uploadOpen, setUploadOpen }) {
       const report = await res.json();
       return report;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -70,7 +74,8 @@ function FileInput({ reports, setReports, uploadOpen, setUploadOpen }) {
   async function handleCSV(data) {
     let rows = data.split("\n");
     let promises = [];
-    for (let i = reports.length + 1; i < reports.length + 3; i++) {
+    for (let i = 1; i < rows.length; i++) {
+      console.log(rows[i]);
       let url = rows[i].split(",")[0];
       if (url) {
         url = url.replace("http:", "https:").trim();

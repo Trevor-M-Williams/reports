@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getReports } from "../firebase";
 import DashboardNav from "../components/DashboardNav";
 import ReportsTable from "../components/ReportsTable";
 import FileInput from "../components/FileInput";
@@ -8,6 +9,10 @@ const Test = () => {
   const [reports, setReports] = useState([]);
   const [currentReport, setCurrentReport] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
+
+  useEffect(() => {
+    getReports(setReports);
+  }, []);
 
   useEffect(() => {
     console.log(reports);
