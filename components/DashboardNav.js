@@ -1,7 +1,7 @@
 function DashboardNav({ setUploadOpen }) {
   return (
     <div className="mx-auto mb-5 flex h-10 w-full max-w-5xl items-center justify-between">
-      <div className="text-2xl text-[#66f]">LOGO</div>
+      <div></div>
       <div onClick={() => setUploadOpen(true)} className="h-3/4 cursor-pointer">
         <svg
           width="100%"
