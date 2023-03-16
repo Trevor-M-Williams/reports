@@ -15,7 +15,11 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    console.log(reports);
+    console.log("reports changed");
+    if (currentReport) {
+      let index = currentReport.id;
+      setCurrentReport(reports[index]);
+    }
   }, [reports]);
 
   return (

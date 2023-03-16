@@ -23,6 +23,7 @@ export function getReports(setReports) {
     (snapshot) => {
       const reportsData = snapshot.val();
       if (reportsData) {
+        console.log("new data");
         const reportsList = Object.values(reportsData);
         setReports(reportsList);
       }
@@ -35,13 +36,7 @@ export function getReports(setReports) {
 
 export function postReport(data) {
   if (!data) return;
-  if (!data.url) return;
-
-  let id = data.url
-    .replace("http://", "")
-    .replace("https://", "")
-    .replace("www.", "")
-    .split(".")[0];
+  let id = data.title;
   const db = getDatabase();
   const reference = ref(db, "reports/" + id);
   set(reference, data);

@@ -1,7 +1,10 @@
 import { useEffect, useRef } from "react";
 
-function Metric({ category, value }) {
+function Metric({ category, value, sidePanel }) {
   const circleRef = useRef(null);
+
+  const sidePanelCategoryText = "text-[3vw] sm:text-base";
+  const sidePanelScoreText = "text-[8vw] sm:text-4xl";
 
   const green = "#0c6";
   const red = "#f33";
@@ -9,7 +12,7 @@ function Metric({ category, value }) {
 
   let color = green;
   if (value < 80) color = yellow;
-  if (value < 40) color = red;
+  if (value < 50) color = red;
 
   let offset = 1 - value / 100;
 
@@ -22,9 +25,9 @@ function Metric({ category, value }) {
   }, []);
 
   return (
-    <div className="md:mx[5%] mx-[2%] flex flex-col items-center py-4 sm:py-2">
-      <div className="relative">
-        <svg viewBox="0 0 100 100" style={{ height: "min(25vh, 40vw)" }}>
+    <div className="flex grow flex-col items-center p-1 lg:p-2">
+      <div className="relative max-h-[30vh]">
+        <svg viewBox="0 0 100 100" height="100%" width="100%">
           <clipPath id="clipPath">
             <circle cx="50" cy="50" r="45"></circle>
           </clipPath>
@@ -42,12 +45,20 @@ function Metric({ category, value }) {
           ></circle>
         </svg>
         <div
-          className={`absolute inset-0 flex items-center justify-center text-5xl font-medium text-gray-700 sm:text-[6vh]`}
+          className={`absolute inset-0 flex items-center justify-center text-5xl font-medium text-gray-700 sm:text-[6vh] ${
+            sidePanel ? sidePanelScoreText : null
+          }`}
         >
           {value}
         </div>
       </div>
-      <div className="text-2xl font-medium sm:mt-2">{category}</div>
+      <div
+        className={`font-medium sm:mt-2 sm:text-2xl ${
+          sidePanel ? sidePanelCategoryText : null
+        }`}
+      >
+        {category}
+      </div>
     </div>
   );
 }

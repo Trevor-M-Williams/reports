@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { database } from "./database";
 
-function FileInput({ reports, setReports, uploadOpen, setUploadOpen }) {
+function FileInput({ uploadOpen, setUploadOpen }) {
   const [dragging, setDragging] = useState(false);
   const [message, setMessage] = useState();
   const [messageColor, setMessageColor] = useState("text-gray-700");
@@ -9,10 +8,6 @@ function FileInput({ reports, setReports, uploadOpen, setUploadOpen }) {
   const [percent, setPercent] = useState(0);
   const [file, setFile] = useState();
   const opacity = uploadOpen ? "opacity-100" : "opacity-0 pointer-events-none";
-
-  useEffect(() => {
-    console.log(file);
-  }, [file]);
 
   useEffect(() => {
     if (loading) {
@@ -25,18 +20,43 @@ function FileInput({ reports, setReports, uploadOpen, setUploadOpen }) {
     }
   }, [loading]);
 
-  async function generateReport(url) {
-    try {
-      const res = await fetch("/api/reports?url=" + url);
-      const report = await res.json();
-      return report;
-    } catch (error) {
-      console.error(error);
+  async function handleCSV(data) {
+    let rows = data.split("\n");
+    let keys = rows[0].split(",");
+    for (let i = 1; i < rows.length; i++) {
+      // if (i > 2) break;
+      let data = {};
+      let row = rows[i].split(",");
+      keys.forEach((key, i) => {
+        if (key === "website") {
+          key = "url";
+          if (row[i].includes("http:"))
+            row[i] = row[i].replace("http:", "https:");
+        } else if (key.includes("\r") || key.includes("\n")) {
+          key = key.replace("\r", "").replace("\n", "");
+        }
+        let value = row[i];
+        if (!value) value = "";
+        data[key] = value;
+      });
+      generateReport(data);
     }
   }
 
-  function generateTestData() {
-    setReports(database);
+  function handleUpload() {
+    if (file.type !== "text/csv") {
+      setMessage("File must be a CSV");
+      setMessageColor("text-red-700");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.addEventListener("load", (event) => {
+      const result = event.target.result;
+      handleCSV(result);
+    });
+    reader.readAsText(file);
+
     setUploadOpen(false);
   }
 
@@ -71,43 +91,9 @@ function FileInput({ reports, setReports, uploadOpen, setUploadOpen }) {
     setMessage();
   }
 
-  async function handleCSV(data) {
-    let rows = data.split("\n");
-    let promises = [];
-    for (let i = 1; i < rows.length; i++) {
-      console.log(rows[i]);
-      let url = rows[i].split(",")[0];
-      if (url) {
-        url = url.replace("http:", "https:").trim();
-        promises.push(generateReport(url));
-      }
-    }
-    let newReports = await Promise.all(promises);
-    setPercent(100);
-    setReports([...reports, ...newReports]);
-    setLoading(false);
-    setFile();
-    setUploadOpen(false);
-  }
-
-  function handleUpload() {
-    if (file.type !== "text/csv") {
-      setMessage("File must be a CSV");
-      setMessageColor("text-red-700");
-      return;
-    }
-    setLoading(true);
-    const reader = new FileReader();
-    reader.addEventListener("load", (event) => {
-      const result = event.target.result;
-      handleCSV(result);
-    });
-    reader.readAsText(file);
-  }
-
   return (
     <div
-      className={`transition-color absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/50 duration-500 ${opacity}`}
+      className={`transition-color absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/50 duration-500 ${opacity}`}
     >
       <div className="relative flex h-[50vh] w-full max-w-md items-center justify-center rounded-lg bg-white p-10">
         <button
@@ -117,12 +103,6 @@ function FileInput({ reports, setReports, uploadOpen, setUploadOpen }) {
           <svg width="100%" viewBox="0 0 1024 1024" fill="#999">
             <path d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z" />
           </svg>
-        </button>
-        <button
-          onClick={generateTestData}
-          className="absolute top-2 right-2 rounded-full bg-blue-400 px-2 text-white"
-        >
-          TEST
         </button>
         <div
           className={`relative flex h-full w-full items-center justify-center rounded-md border-2 border-dashed text-center ${
@@ -175,18 +155,16 @@ function FileInput({ reports, setReports, uploadOpen, setUploadOpen }) {
               className="hidden"
               onChange={handleFileInputChange}
             />
-            {!loading && (
-              <div>
-                <button
-                  disabled={loading}
-                  className="my-6 rounded bg-blue-500 py-2 px-4 font-medium text-white hover:bg-blue-700"
-                  onClick={file ? handleUpload : handleFileSelect}
-                >
-                  {file ? "Upload" : "Select File"}
-                </button>
-                <p className={`absolute w-full ${messageColor}`}>{message}</p>
-              </div>
-            )}
+            <div>
+              <button
+                disabled={loading}
+                className="my-6 w-32 rounded bg-blue-500 py-2 font-medium text-white hover:bg-blue-700"
+                onClick={file ? handleUpload : handleFileSelect}
+              >
+                {file ? "Upload" : "Select File"}
+              </button>
+              <p className={`absolute w-full ${messageColor}`}>{message}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -195,3 +173,17 @@ function FileInput({ reports, setReports, uploadOpen, setUploadOpen }) {
 }
 
 export default FileInput;
+
+export async function generateReport(data) {
+  try {
+    const res = await fetch("/api/reports", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data }),
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
