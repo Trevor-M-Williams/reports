@@ -3,21 +3,18 @@ import { postReport } from "../../firebase";
 export default async function handler(req, res) {
   if (req.method === "POST") {
     const { data } = req.body;
-    postReport({
-      ...data,
-      status: 1,
-    });
+    let url = data.url || data.website;
     try {
-      if (data.url) {
+      if (url) {
         const response = await fetch(
-          `https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=${data.url}&strategy=MOBILE&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO&key=${process.env.PAGESPEED_API_KEY}`
+          `https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&strategy=MOBILE&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO&key=${process.env.PAGESPEED_API_KEY}`
         );
         const json = await response.json();
         const lighthouse = handleJSON(json);
         const report = {
           ...data,
           ...lighthouse,
-          status: 2,
+          status: 3,
         };
         postReport(report);
         res.status(200).json(report);
@@ -25,7 +22,7 @@ export default async function handler(req, res) {
         console.log("no url");
         postReport({
           ...data,
-          status: 0,
+          status: 1,
         });
         res.status(200).json(data);
       }

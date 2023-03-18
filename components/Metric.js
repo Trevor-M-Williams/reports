@@ -3,8 +3,10 @@ import { useEffect, useRef } from "react";
 function Metric({ category, value, sidePanel }) {
   const circleRef = useRef(null);
 
-  const sidePanelCategoryText = "text-[3vw] sm:text-base";
-  const sidePanelScoreText = "text-[8vw] sm:text-4xl";
+  const categoryText = "sm:text-2xl";
+  const scoreText = "text-5xl sm:text-[6vh]";
+  const sidePanelCategoryText = "text-[3vw] sm:text-xl lg:text-base";
+  const sidePanelScoreText = "text-[8vw] sm:text-6xl lg:text-4xl xl:text-5xl";
 
   const green = "#0c6";
   const red = "#f33";
@@ -22,7 +24,7 @@ function Metric({ category, value, sidePanel }) {
       circleRef.current.setAttribute("stroke", color);
       circleRef.current.setAttribute("stroke-dashoffset", offset);
     }, 50);
-  }, []);
+  });
 
   return (
     <div className="flex grow flex-col items-center p-1 lg:p-2">
@@ -45,16 +47,16 @@ function Metric({ category, value, sidePanel }) {
           ></circle>
         </svg>
         <div
-          className={`absolute inset-0 flex items-center justify-center text-5xl font-medium text-gray-700 sm:text-[6vh] ${
-            sidePanel ? sidePanelScoreText : null
+          className={`absolute inset-0 flex items-center justify-center font-medium text-gray-700 ${
+            sidePanel ? sidePanelScoreText : scoreText
           }`}
         >
           {value}
         </div>
       </div>
       <div
-        className={`font-medium sm:mt-2 sm:text-2xl ${
-          sidePanel ? sidePanelCategoryText : null
+        className={`font-medium sm:mt-2 ${
+          sidePanel ? sidePanelCategoryText : categoryText
         }`}
       >
         {category}

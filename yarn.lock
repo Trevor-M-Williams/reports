@@ -2299,6 +2299,11 @@
   dependencies:
     "p-limit" "^3.0.2"
 
+"papaparse@^5.4.0":
+  "integrity" "sha512-ZBQABWG09p+u8rFoJVl/GhgxZ5zy9Zh1Lu/LVc7VX5T4nljjC14/YTcpebYwqP218B9X307eBOP7Tuhoqv7v7w=="
+  "resolved" "https://registry.npmjs.org/papaparse/-/papaparse-5.4.0.tgz"
+  "version" "5.4.0"
+
 "parent-module@^1.0.0":
   "integrity" "sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g=="
   "resolved" "https://registry.npmjs.org/parent-module/-/parent-module-1.0.1.tgz"

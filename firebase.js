@@ -23,7 +23,6 @@ export function getReports(setReports) {
     (snapshot) => {
       const reportsData = snapshot.val();
       if (reportsData) {
-        console.log("new data");
         const reportsList = Object.values(reportsData);
         setReports(reportsList);
       }
@@ -35,6 +34,8 @@ export function getReports(setReports) {
 }
 
 export function postReport(data) {
+  // consider replacing special characters in title
+  // or use a different id strategy
   if (!data) return;
   let id = data.title;
   const db = getDatabase();

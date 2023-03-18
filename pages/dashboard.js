@@ -15,11 +15,11 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    console.log("reports changed");
-    if (currentReport) {
-      let index = currentReport.id;
-      setCurrentReport(reports[index]);
-    }
+    if (!currentReport) return;
+    setCurrentReport({
+      index: currentReport.index,
+      report: reports[currentReport.index],
+    });
   }, [reports]);
 
   return (
@@ -35,6 +35,8 @@ const Dashboard = () => {
         <>
           <ReportsTable reports={reports} setCurrentReport={setCurrentReport} />
           <SidePanel
+            reports={reports}
+            setReports={setReports}
             currentReport={currentReport}
             setCurrentReport={setCurrentReport}
           />

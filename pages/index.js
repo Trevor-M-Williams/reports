@@ -1,29 +1,33 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import Report from "../components/Report";
-import { database } from "../components/database";
+import { getReports } from "../firebase";
 
 export default function Home() {
   const router = useRouter();
+  const [reports, setReports] = useState([]);
   const [data, setData] = useState();
-  const [start, setStart] = useState(Date.now());
   const inputRef = useRef();
 
   useEffect(() => {
+    getReports(setReports);
+  }, []);
+
+  useEffect(() => {
+    handleQuery();
+  }, [reports]);
+
+  function handleQuery() {
     const { url } = router.query;
     if (url) {
-      let json = database.find((item) => item.url === url);
-      if (json) {
-        setData(json);
-      } else {
-        setData(null);
-        // hit the API
-      }
+      let data = reports.find((report) => report.url === url);
+      if (data) setData(data);
+      else setData(null);
       return;
     }
     setData(false);
     inputRef.current.classList.remove("opacity-0");
-  }, [router.query]);
+  }
 
   if (!data)
     return (

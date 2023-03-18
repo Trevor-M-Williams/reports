@@ -1,46 +1,76 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Metric from "./Metric";
 import SidePanelMenu from "./SidePanelMenu";
+import { postReport } from "../firebase";
 
-function SidePanel({ currentReport, setCurrentReport }) {
+function SidePanel({ reports, currentReport, setCurrentReport }) {
   const [sidePanelMenuOpen, setSidePanelMenuOpen] = useState(false);
-
-  useEffect(() => {
-    setSidePanelMenuOpen(false);
-  }, [currentReport]);
-
-  const statusCodes = [
-    "No Report",
-    "Generating Report...",
-    "Report Generated",
-    "Email Sent",
-    "Email Error",
-  ];
-  const details = [
-    ["status", "status"],
-    ["email", "email"],
-    ["phoneNumber", "phone"],
-    ["rating", "rating"],
-    ["reviewCount", "reviews"],
-  ];
+  const [editing, setEditing] = useState(false);
 
   let transform = "translate-x-full";
   if (currentReport) {
     transform = "translate-x-0";
+  }
+  const details = [
+    ["name", "title"],
+    ["url", "url"],
+    ["category", "category"],
+    ["email", "email"],
+    ["phone", "phoneNumber"],
+    ["rating", "rating"],
+    ["reviews", "reviewCount"],
+  ];
+  const statusColors = [
+    "bg-red-500",
+    "bg-white",
+    "bg-yellow-300",
+    "bg-blue-400",
+    "bg-green-500",
+  ];
+
+  function closeSidePanel() {
+    setEditing(false);
+    setSidePanelMenuOpen(false);
+    setCurrentReport(false);
   }
 
   function handleSidePanelMenu() {
     setSidePanelMenuOpen(!sidePanelMenuOpen);
   }
 
+  function handleInputChange(e, key) {
+    let report = {
+      ...currentReport.report,
+      [key]: e.target.value,
+    };
+    setCurrentReport({
+      index: currentReport.index,
+      report,
+    });
+  }
+
+  function handleSave() {
+    postReport(currentReport.report);
+    setEditing(false);
+  }
+
+  function handleCancel() {
+    let report = reports[currentReport.index];
+    setCurrentReport({
+      index: currentReport.index,
+      report,
+    });
+    setEditing(false);
+  }
+
   return (
     <div
-      className={`fixed inset-y-0 right-0 z-20 flex w-full flex-col items-center bg-white px-4 py-12 shadow-xl transition-transform duration-500 ease-in-out lg:w-1/2 lg:max-w-2xl ${transform}`}
+      className={`fixed inset-y-0 right-0 z-20 flex w-full flex-col items-center bg-white px-4 pt-20 shadow-xl transition-transform duration-500 ease-in-out lg:w-1/2 lg:max-w-2xl ${transform}`}
     >
       {currentReport && (
         <div className="w-full">
           <button
-            onClick={() => setCurrentReport(false)}
+            onClick={closeSidePanel}
             className="absolute top-3 left-3 h-6 w-6"
           >
             <svg width="100%" viewBox="0 0 1024 1024" fill="#999">
@@ -62,76 +92,99 @@ function SidePanel({ currentReport, setCurrentReport }) {
           {sidePanelMenuOpen && (
             <SidePanelMenu
               currentReport={currentReport}
-              setCurrentReport={setCurrentReport}
               setSidePanelMenuOpen={setSidePanelMenuOpen}
+              setEditing={setEditing}
             />
           )}
 
           <div className="flex flex-col items-center">
-            <div className="text-[5vw] font-medium md:text-3xl">
-              {currentReport.title}
+            <a
+              href={
+                currentReport.report.url ||
+                "http://www.google.com/search?q=" + currentReport.report.title
+              }
+              target="_blank"
+              className="text-[5vw] font-medium lg:text-3xl"
+            >
+              {currentReport.report.title}
+            </a>
+            <div className="mt-4 flex items-center text-2xl">
+              <div className="">Status:</div>
+              <div
+                className={`ml-2 mt-1 h-5 w-5 cursor-pointer rounded-full border-2 border-white outline outline-1 outline-gray-700 ${
+                  statusColors[currentReport.report.status]
+                }`}
+              ></div>
             </div>
-
-            {currentReport.url ? (
-              <a
-                href={currentReport.url}
-                target="_blank"
-                className="mt-2 text-[4vw] font-medium text-blue-700 md:text-2xl"
-              >
-                {currentReport.url}
-              </a>
-            ) : (
-              <div className="mt-2 text-[4vw] font-medium md:text-2xl">
-                No URL
-              </div>
-            )}
           </div>
 
-          {currentReport.performance && (
+          {currentReport.report.performance && (
             <div className="flex flex-col items-center">
-              <div className="mt-8 flex w-full justify-between">
+              <div className="mt-10 flex w-full justify-between">
                 <Metric
                   category="Performance"
-                  value={Math.round(currentReport.performance * 100)}
+                  value={Math.round(currentReport.report.performance * 100)}
                   sidePanel={true}
                 />
                 <Metric
                   category="Accessibility"
-                  value={Math.round(currentReport.accessibility * 100)}
+                  value={Math.round(currentReport.report.accessibility * 100)}
                   sidePanel={true}
                 />
                 <Metric
                   category="Best Practices"
-                  value={Math.round(currentReport.bestPractices * 100)}
+                  value={Math.round(currentReport.report.bestPractices * 100)}
                   sidePanel={true}
                 />
                 <Metric
                   category="SEO"
-                  value={Math.round(currentReport.seo * 100)}
+                  value={Math.round(currentReport.report.seo * 100)}
                   sidePanel={true}
                 />
               </div>
             </div>
           )}
 
-          <div className="mx-auto mt-8 flex w-full flex-col text-sm sm:text-base md:text-xl">
+          <div className="mx-auto mt-10 flex w-full flex-col text-xs sm:text-xl lg:text-lg xl:text-xl">
             {details.map((detail, i) => {
-              const key = detail[0];
-              const label = detail[1];
+              const label = detail[0];
+              const key = detail[1];
+              let textTransform = "";
+              if (key === "email") textTransform = "normal-case";
               return (
-                <div className="flex border-b capitalize" key={i}>
+                <div className={`flex border-b capitalize`} key={i}>
                   <div className="ml-2 w-1/4 border-r py-1 font-medium md:ml-4">
                     {label}:
                   </div>
-                  <div className="ml-2 md:ml-4">
-                    {key === "status"
-                      ? statusCodes[currentReport.status]
-                      : currentReport[key] || ""}
-                  </div>
+                  <input
+                    className={`flex w-full select-none pl-2 focus:outline-0 md:pl-4 ${textTransform} ${
+                      editing ? "" : "pointer-events-none"
+                    }`}
+                    value={currentReport.report[key] || ""}
+                    onChange={(e) => handleInputChange(e, key)}
+                    readOnly={editing ? false : true}
+                  />
                 </div>
               );
             })}
           </div>
+
+          {editing && (
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={handleSave}
+                className="w-20 rounded-md bg-blue-500 py-2 text-white hover:bg-blue-700"
+              >
+                Save
+              </button>
+              <button
+                onClick={handleCancel}
+                className="ml-4 w-20 rounded-md bg-gray-500 py-2 text-white hover:bg-gray-700"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

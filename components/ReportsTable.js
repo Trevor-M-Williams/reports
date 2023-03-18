@@ -1,20 +1,19 @@
 const ReportsTable = ({ reports, setCurrentReport }) => {
-  function handleClick(i) {
-    const report = {
-      ...reports[i],
-      id: i,
-    };
-    setCurrentReport(report);
-  }
-
   const statusColors = [
     "bg-white",
+    "bg-yellow-300",
     "bg-blue-400",
     "bg-green-500",
     "bg-red-500",
   ];
-
   const scoreColors = ["bg-red-400", "bg-yellow-200", "bg-green-400"];
+
+  function handleClick(i) {
+    setCurrentReport({
+      index: i,
+      report: reports[i],
+    });
+  }
 
   return (
     <div className="mx-auto flex w-full max-w-7xl overflow-auto px-2">
@@ -46,7 +45,7 @@ const ReportsTable = ({ reports, setCurrentReport }) => {
                 className="cursor-pointer hover:bg-blue-50"
               >
                 <td className="relative mx-2 border border-l-0 border-r-0 px-2 py-2 md:px-4">
-                  <div className="select-none">{report.title}</div>
+                  <div className="select-none capitalize">{report.title}</div>
                 </td>
                 <td className="border px-2 capitalize md:px-4">
                   {report.category}
