@@ -2,15 +2,19 @@ import { postReport } from "../firebase";
 import { generateReport } from "./FileInput";
 
 function SidePanelMenu({ currentReport, setSidePanelMenuOpen, setEditing }) {
-  function handleReport() {
+  function sendEmail() {
     postReport({
       ...currentReport.report,
-      status: 2,
+      status: 4,
     });
-    let newReport = {
+  }
+
+  function handleReport() {
+    const newReport = {
       ...currentReport.report,
       status: 2,
     };
+    postReport(newReport);
     generateReport(newReport);
     setSidePanelMenuOpen(false);
   }
@@ -28,9 +32,12 @@ function SidePanelMenu({ currentReport, setSidePanelMenuOpen, setEditing }) {
       >
         Generate Report
       </div>
-      {/* <div className="cursor-pointer border-b p-4 py-1 hover:bg-blue-50">
+      <div
+        onClick={sendEmail}
+        className="cursor-pointer border-b p-4 py-1 hover:bg-blue-50"
+      >
         Send Email
-      </div> */}
+      </div>
       <div
         onClick={handleEdit}
         className="cursor-pointer p-4 py-1 hover:bg-blue-50"

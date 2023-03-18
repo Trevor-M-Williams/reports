@@ -10,28 +10,29 @@ function FileInput({ uploadOpen, setUploadOpen }) {
   const opacity = uploadOpen ? "opacity-100" : "opacity-0 pointer-events-none";
 
   function handleData(data) {
-    // data.forEach((item, i) => {
-    //   if (!item.title) return;
-    //   postReport({
-    //     ...item,
-    //     status: 2,
-    //   });
-    //   generateReport(item);
-    // });
-
     data.forEach((item, i) => {
-      if (!item.url) return;
-      item.title = item.url
-        .replace("https://", "")
-        .replace("http://", "")
-        .replace("www.", "")
-        .split(".")[0]
-        .trim();
+      if (i > 4) return;
+      if (!item.title) return;
       postReport({
         ...item,
-        status: 3,
+        status: 2,
       });
+      generateReport(item);
     });
+
+    // data.forEach((item, i) => {
+    //   if (!item.url) return;
+    //   item.title = item.url
+    //     .replace("https://", "")
+    //     .replace("http://", "")
+    //     .replace("www.", "")
+    //     .split(".")[0]
+    //     .trim();
+    //   postReport({
+    //     ...item,
+    //     status: 4,
+    //   });
+    // });
   }
 
   function handleUpload() {

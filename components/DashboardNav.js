@@ -1,38 +1,69 @@
-function DashboardNav({ setUploadOpen }) {
+import { FiUpload } from "react-icons/fi";
+import { AiOutlineMail } from "react-icons/ai";
+import { TbReportAnalytics } from "react-icons/tb";
+import { RiDeleteBinLine } from "react-icons/ri";
+
+import { postReport } from "../firebase";
+import { generateReport } from "./FileInput";
+
+function DashboardNav({
+  reports,
+  setUploadOpen,
+  reportsMenuVisible,
+  checked,
+  setChecked,
+}) {
+  function handleEmail() {
+    checked.forEach((isChecked, i) => {
+      if (!isChecked) return;
+      postReport({
+        ...reports[i],
+        status: 4,
+      });
+    });
+    setChecked(Array(reports.length).fill(false));
+  }
+
+  function handleReportGeneration() {
+    checked.forEach((isChecked, i) => {
+      if (!isChecked) return;
+      const newReport = {
+        ...reports[i],
+        status: 2,
+      };
+      postReport(newReport);
+      generateReport(newReport);
+    });
+    setChecked(Array(reports.length).fill(false));
+  }
+
+  function handleDelete() {
+    console.log("Delete");
+  }
+
   return (
-    <div className="mx-auto mb-5 flex h-10 w-full max-w-5xl items-center justify-between">
-      <div></div>
-      <div onClick={() => setUploadOpen(true)} className="h-3/4 cursor-pointer">
-        <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M12 8L12 16"
-            stroke="#66f"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+    <div className="mx-auto mb-5 flex h-10 w-full max-w-5xl items-center justify-end text-2xl text-sky-600">
+      {reportsMenuVisible ? (
+        <>
+          <AiOutlineMail
+            onClick={handleEmail}
+            className="ml-2 cursor-pointer hover:text-sky-800"
           />
-          <path
-            d="M15 11L12.087 8.08704V8.08704C12.039 8.03897 11.961 8.03897 11.913 8.08704V8.08704L9 11"
-            stroke="#66f"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+          <TbReportAnalytics
+            onClick={handleReportGeneration}
+            className="ml-2 cursor-pointer hover:text-sky-800"
           />
-          <path
-            d="M3 15L3 16L3 19C3 20.1046 3.89543 21 5 21L19 21C20.1046 21 21 20.1046 21 19L21 16L21 15"
-            stroke="#66f"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+          <RiDeleteBinLine
+            onClick={handleDelete}
+            className="ml-2 cursor-pointer text-[1.45rem] hover:text-sky-800"
           />
-        </svg>
-      </div>
+        </>
+      ) : (
+        <FiUpload
+          onClick={() => setUploadOpen(true)}
+          className="cursor-pointer hover:text-sky-800"
+        />
+      )}
     </div>
   );
 }

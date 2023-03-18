@@ -1,12 +1,31 @@
-const ReportsTable = ({ reports, setCurrentReport }) => {
+import { useState, useEffect } from "react";
+
+function ReportsTable({
+  reports,
+  currentReport,
+  setCurrentReport,
+  checked,
+  setChecked,
+  setReportsMenuVisible,
+}) {
+  const [allChecked, setAllChecked] = useState(false);
   const statusColors = [
+    "bg-red-500",
     "bg-white",
     "bg-yellow-300",
     "bg-blue-400",
     "bg-green-500",
-    "bg-red-500",
   ];
   const scoreColors = ["bg-red-400", "bg-yellow-200", "bg-green-400"];
+
+  useEffect(() => {
+    setChecked(Array(reports.length).fill(false));
+  }, [reports]);
+
+  useEffect(() => {
+    if (checked.includes(true)) setReportsMenuVisible(true);
+    else setReportsMenuVisible(false);
+  }, [checked]);
 
   function handleClick(i) {
     setCurrentReport({
@@ -15,15 +34,29 @@ const ReportsTable = ({ reports, setCurrentReport }) => {
     });
   }
 
+  function handleCheckboxes(index) {
+    if (index === "all") {
+      setChecked(Array(reports.length).fill(!allChecked));
+      setAllChecked(!allChecked);
+    } else {
+      let newChecked = [...checked];
+      newChecked[index] = !newChecked[index];
+      setChecked(newChecked);
+    }
+  }
+
   return (
     <div className="mx-auto flex w-full max-w-7xl overflow-auto px-2">
-      <table className="grow text-sm md:text-base lg:text-lg">
+      <table className="grow select-none text-xs md:text-base lg:text-lg">
         <thead className="">
-          <tr>
-            <th className="w-[35%] pl-2 text-left md:pl-4">Name</th>
-            <th className="w-[35%] pl-2 text-left md:pl-4">Category</th>
-            <th className="w-[15%]">Score</th>
-            <th className="w-[15%]">Status</th>
+          <tr className="">
+            <th className="w-[5%] py-2">
+              <input type="checkbox" onChange={() => handleCheckboxes("all")} />
+            </th>
+            <th className="w-[45%] pl-2 text-left md:pl-4">Name</th>
+            <th className="w-[30%] pl-2 text-left md:pl-4">Category</th>
+            <th className="w-[10%]">Score</th>
+            <th className="w-[10%]">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -41,21 +74,42 @@ const ReportsTable = ({ reports, setCurrentReport }) => {
             return (
               <tr
                 key={i}
-                onClick={() => handleClick(i)}
-                className="cursor-pointer hover:bg-blue-50"
+                className={`cursor-pointer ${
+                  i === currentReport.index ? "bg-blue-50" : ""
+                }`}
               >
-                <td className="relative mx-2 border border-l-0 border-r-0 px-2 py-2 md:px-4">
-                  <div className="select-none capitalize">{report.title}</div>
+                <td className="cursor-default border border-l-0 px-2 text-center capitalize md:px-4">
+                  <input
+                    type="checkbox"
+                    checked={checked[i]}
+                    onChange={() => handleCheckboxes(i)}
+                    className="cursor-pointer"
+                  />
                 </td>
-                <td className="border px-2 capitalize md:px-4">
-                  {report.category}
+                <td
+                  onClick={() => handleClick(i)}
+                  className="relative mx-2 border border-r-0 px-2 py-2 md:px-4"
+                >
+                  <div className=" capitalize">{report.title}</div>
                 </td>
-                <td className={`border text-center md:w-[10%]`}>
+                <td
+                  onClick={() => handleClick(i)}
+                  className="relative mx-2 border border-r-0 px-2 py-2 md:px-4"
+                >
+                  <div className=" capitalize">{report.category}</div>
+                </td>
+                <td
+                  onClick={() => handleClick(i)}
+                  className={`border text-center md:w-[10%]`}
+                >
                   {report.performance
                     ? Math.round(report.performance * 100)
                     : "-"}
                 </td>
-                <td className={`border border-r-0 md:w-[10%]`}>
+                <td
+                  onClick={() => handleClick(i)}
+                  className={`border border-r-0 md:w-[10%]`}
+                >
                   <div className="flex h-full w-full items-center justify-center">
                     <div
                       className={`h-4 w-4 cursor-pointer rounded-full border-2 border-white outline outline-1 outline-gray-700 ${
@@ -71,6 +125,6 @@ const ReportsTable = ({ reports, setCurrentReport }) => {
       </table>
     </div>
   );
-};
+}
 
 export default ReportsTable;

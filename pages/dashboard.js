@@ -9,6 +9,8 @@ const Dashboard = () => {
   const [reports, setReports] = useState([]);
   const [currentReport, setCurrentReport] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [checked, setChecked] = useState([]);
+  const [reportsMenuVisible, setReportsMenuVisible] = useState(false);
 
   useEffect(() => {
     getReports(setReports);
@@ -24,7 +26,13 @@ const Dashboard = () => {
 
   return (
     <div className="absolute inset-0 flex flex-col px-2 py-4 md:p-6">
-      <DashboardNav setUploadOpen={setUploadOpen} />
+      <DashboardNav
+        reports={reports}
+        reportsMenuVisible={reportsMenuVisible}
+        setUploadOpen={setUploadOpen}
+        checked={checked}
+        setChecked={setChecked}
+      />
       <FileInput
         reports={reports}
         setReports={setReports}
@@ -33,7 +41,14 @@ const Dashboard = () => {
       />
       {reports.length > 0 && (
         <>
-          <ReportsTable reports={reports} setCurrentReport={setCurrentReport} />
+          <ReportsTable
+            reports={reports}
+            currentReport={currentReport}
+            setCurrentReport={setCurrentReport}
+            checked={checked}
+            setChecked={setChecked}
+            setReportsMenuVisible={setReportsMenuVisible}
+          />
           <SidePanel
             reports={reports}
             setReports={setReports}
