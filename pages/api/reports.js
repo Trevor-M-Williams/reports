@@ -18,6 +18,7 @@ export default async function handler(req, res) {
           status: 3,
         };
         postReport(report);
+        console.log(report);
       } else {
         console.log("no url");
         postReport({
