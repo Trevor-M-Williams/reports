@@ -6,6 +6,7 @@ export default async function handler(req, res) {
     let url = data.url || data.website;
     try {
       if (url) {
+        res.status(200).json({ message: "Generating report" });
         const response = await fetch(
           `https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&strategy=MOBILE&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO&key=${process.env.PAGESPEED_API_KEY}`
         );
@@ -17,14 +18,13 @@ export default async function handler(req, res) {
           status: 3,
         };
         postReport(report);
-        res.status(200).json(report);
       } else {
         console.log("no url");
         postReport({
           ...data,
           status: 1,
         });
-        res.status(200).json(data);
+        res.status(418).json({ message: "No URL" });
       }
     } catch (error) {
       console.error(error);
