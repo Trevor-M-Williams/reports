@@ -169,13 +169,16 @@ export default FileInput;
 
 export async function generateReport(data) {
   try {
-    await fetch("/api/reports", {
+    const res = await fetch("/api/reports", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ data }),
     });
+
+    const result = await res.json();
+    console.log(result);
   } catch (error) {
     console.error(error);
   }
