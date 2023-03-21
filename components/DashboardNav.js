@@ -42,7 +42,7 @@ function DashboardNav({
   }
 
   return (
-    <div className="mx-auto mb-5 flex h-10 w-full max-w-5xl items-center justify-end text-2xl text-sky-600">
+    <div className="mx-auto mb-5 flex h-10 w-full items-center justify-end text-2xl text-sky-600">
       {reportsMenuVisible ? (
         <>
           <AiOutlineMail

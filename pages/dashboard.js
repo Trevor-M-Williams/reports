@@ -25,7 +25,7 @@ const Dashboard = () => {
   }, [reports]);
 
   return (
-    <div className="absolute inset-0 flex flex-col px-2 py-4 md:p-6">
+    <div className="inset-0 mx-auto flex h-screen w-full max-w-7xl flex-col px-2 py-4 md:p-6">
       <DashboardNav
         reports={reports}
         reportsMenuVisible={reportsMenuVisible}
