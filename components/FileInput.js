@@ -10,8 +10,9 @@ function FileInput({ uploadOpen, setUploadOpen }) {
   const opacity = uploadOpen ? "opacity-100" : "opacity-0 pointer-events-none";
 
   function handleData(data) {
+    console.log(data);
     data.forEach((item, i) => {
-      if (i > 4) return;
+      // if (i > 4) return;
       if (!item.title) return;
       postReport({
         ...item,
@@ -184,6 +185,14 @@ export async function generateReport(data) {
   // }
 
   const url = data.url || data.website;
+  if (!url) {
+    postReport({
+      ...data,
+      status: 1,
+    });
+    return;
+  }
+
   try {
     const response = await fetch(
       `https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&strategy=MOBILE&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO`

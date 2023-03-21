@@ -42,3 +42,11 @@ export function postReport(data) {
   const reference = ref(db, "reports/" + id);
   set(reference, data);
 }
+
+export function deleteReport(data) {
+  if (!data) return;
+  let id = data.title;
+  const db = getDatabase();
+  const reference = ref(db, "reports/" + id);
+  set(reference, null);
+}

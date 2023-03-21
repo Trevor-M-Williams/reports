@@ -3,7 +3,7 @@ import { AiOutlineMail } from "react-icons/ai";
 import { TbReportAnalytics } from "react-icons/tb";
 import { RiDeleteBinLine } from "react-icons/ri";
 
-import { postReport } from "../firebase";
+import { postReport, deleteReport } from "../firebase";
 import { generateReport } from "./FileInput";
 
 function DashboardNav({
@@ -38,7 +38,14 @@ function DashboardNav({
   }
 
   function handleDelete() {
-    console.log("Delete");
+    const reportsCopy = [...reports];
+
+    checked.forEach((isChecked, i) => {
+      if (!isChecked) return;
+      deleteReport(reportsCopy[i]);
+    });
+
+    setChecked(Array(reports.length).fill(false));
   }
 
   return (
