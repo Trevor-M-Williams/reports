@@ -6,9 +6,11 @@ function ReportsTable({
   setCurrentReport,
   checked,
   setChecked,
+  allChecked,
+  setAllChecked,
   setReportsMenuVisible,
 }) {
-  const [allChecked, setAllChecked] = useState(false);
+  const [shiftClicked, setShiftClicked] = useState(false);
   const statusColors = [
     "bg-red-500",
     "bg-white",
@@ -17,6 +19,15 @@ function ReportsTable({
     "bg-green-500",
   ];
   const scoreColors = ["bg-red-400", "bg-yellow-200", "bg-green-400"];
+
+  useEffect(() => {
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Shift") setShiftClicked(true);
+    });
+    window.addEventListener("keyup", (e) => {
+      if (e.key === "Shift") setShiftClicked(false);
+    });
+  }, []);
 
   useEffect(() => {
     setChecked(Array(reports.length).fill(false));
@@ -41,6 +52,15 @@ function ReportsTable({
     } else {
       let newChecked = [...checked];
       newChecked[index] = !newChecked[index];
+      if (shiftClicked) {
+        let start = 0;
+        for (let i = 1; i < index; i++) {
+          if (newChecked[i]) start = i;
+        }
+        for (let i = start; i < index; i++) {
+          newChecked[i] = true;
+        }
+      }
       setChecked(newChecked);
     }
   }
@@ -51,7 +71,11 @@ function ReportsTable({
         <thead className="">
           <tr className="">
             <th className="w-[5%] py-2">
-              <input type="checkbox" onChange={() => handleCheckboxes("all")} />
+              <input
+                type="checkbox"
+                checked={allChecked}
+                onChange={() => handleCheckboxes("all")}
+              />
             </th>
             <th className="w-[45%] pl-2 text-left md:pl-4">Name</th>
             <th className="w-[30%] pl-2 text-left md:pl-4">Category</th>

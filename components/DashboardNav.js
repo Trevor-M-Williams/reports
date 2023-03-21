@@ -12,6 +12,7 @@ function DashboardNav({
   reportsMenuVisible,
   checked,
   setChecked,
+  setAllChecked,
 }) {
   function handleEmail() {
     checked.forEach((isChecked, i) => {
@@ -22,6 +23,7 @@ function DashboardNav({
       });
     });
     setChecked(Array(reports.length).fill(false));
+    setAllChecked(false);
   }
 
   function handleReportGeneration() {
@@ -35,6 +37,7 @@ function DashboardNav({
       generateReport(newReport);
     });
     setChecked(Array(reports.length).fill(false));
+    setAllChecked(false);
   }
 
   function handleDelete() {
@@ -46,6 +49,7 @@ function DashboardNav({
     });
 
     setChecked(Array(reports.length).fill(false));
+    setAllChecked(false);
   }
 
   return (

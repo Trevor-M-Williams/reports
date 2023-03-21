@@ -10,10 +10,16 @@ function FileInput({ uploadOpen, setUploadOpen }) {
   const opacity = uploadOpen ? "opacity-100" : "opacity-0 pointer-events-none";
 
   function handleData(data) {
-    console.log(data);
     data.forEach((item, i) => {
-      // if (i > 4) return;
-      if (!item.title) return;
+      if (i > 4) return;
+      if (!item.url && !item.website) return;
+      if (item.website) {
+        item.url = item.website;
+        delete item.website;
+      }
+      item.url =
+        "https://" +
+        item.url.replace("https://", "").replace("http://", "").split("/")[0];
       postReport({
         ...item,
         status: 2,

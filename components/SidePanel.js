@@ -1,10 +1,8 @@
 import { useState } from "react";
-import Metric from "./Metric";
-import SidePanelMenu from "./SidePanelMenu";
 import { postReport } from "../firebase";
+import Metric from "./Metric";
 
 function SidePanel({ reports, currentReport, setCurrentReport }) {
-  const [sidePanelMenuOpen, setSidePanelMenuOpen] = useState(false);
   const [editing, setEditing] = useState(false);
 
   let transform = "translate-x-full";
@@ -30,12 +28,7 @@ function SidePanel({ reports, currentReport, setCurrentReport }) {
 
   function closeSidePanel() {
     setEditing(false);
-    setSidePanelMenuOpen(false);
     setCurrentReport(false);
-  }
-
-  function handleSidePanelMenu() {
-    setSidePanelMenuOpen(!sidePanelMenuOpen);
   }
 
   function handleInputChange(e, key) {
@@ -65,7 +58,7 @@ function SidePanel({ reports, currentReport, setCurrentReport }) {
 
   return (
     <div
-      className={`fixed inset-y-0 right-0 z-20 flex w-full flex-col items-center bg-white px-4 pt-20 shadow-xl transition-transform duration-500 ease-in-out lg:w-1/2 lg:max-w-2xl ${transform}`}
+      className={`fixed inset-y-0 right-0 z-20 flex w-full flex-col bg-white px-4 pt-20 shadow-xl transition-transform duration-500 ease-in-out lg:w-1/2 lg:max-w-2xl ${transform}`}
     >
       {currentReport && (
         <div className="w-full">
@@ -79,7 +72,7 @@ function SidePanel({ reports, currentReport, setCurrentReport }) {
           </button>
 
           <button
-            onClick={handleSidePanelMenu}
+            onClick={() => setEditing(true)}
             className="absolute top-3 right-3 h-6 w-6"
           >
             <svg width="100%" viewBox="0 0 32.055 32.055" fill="#999">
@@ -88,14 +81,6 @@ function SidePanel({ reports, currentReport, setCurrentReport }) {
               </g>
             </svg>
           </button>
-
-          {sidePanelMenuOpen && (
-            <SidePanelMenu
-              currentReport={currentReport}
-              setSidePanelMenuOpen={setSidePanelMenuOpen}
-              setEditing={setEditing}
-            />
-          )}
 
           <div className="flex flex-col items-center">
             <a

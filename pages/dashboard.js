@@ -10,6 +10,7 @@ const Dashboard = () => {
   const [currentReport, setCurrentReport] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [checked, setChecked] = useState([]);
+  const [allChecked, setAllChecked] = useState(false);
   const [reportsMenuVisible, setReportsMenuVisible] = useState(false);
 
   useEffect(() => {
@@ -32,6 +33,7 @@ const Dashboard = () => {
         setUploadOpen={setUploadOpen}
         checked={checked}
         setChecked={setChecked}
+        setAllChecked={setAllChecked}
       />
       <FileInput
         reports={reports}
@@ -47,6 +49,8 @@ const Dashboard = () => {
             setCurrentReport={setCurrentReport}
             checked={checked}
             setChecked={setChecked}
+            allChecked={allChecked}
+            setAllChecked={setAllChecked}
             setReportsMenuVisible={setReportsMenuVisible}
           />
           <SidePanel
