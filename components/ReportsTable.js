@@ -12,9 +12,6 @@ function ReportsTable({
   statusColors,
 }) {
   const [shiftClicked, setShiftClicked] = useState(false);
-  const [sortCategory, setSortCategory] = useState();
-  const [sortOrder, setSortOrder] = useState();
-  const [reportsArray, setReportsArray] = useState([...reports]);
 
   useEffect(() => {
     window.addEventListener("keydown", (e) => {
@@ -27,21 +24,12 @@ function ReportsTable({
 
   useEffect(() => {
     setChecked(Array(reports.length).fill(false));
-    setReportsArray(() => [...reports]);
   }, [reports]);
 
   useEffect(() => {
     if (checked.includes(true)) setReportsMenuVisible(true);
     else setReportsMenuVisible(false);
   }, [checked]);
-
-  // useEffect(() => {
-  //   setReportsArray((prev) => {
-  //     prev.sort((a, b) =>
-  //       a[sortCategory] > b[sortCategory] ? sortOrder : -sortOrder
-  //     );
-  //   });
-  // }, [sortCategory, sortOrder]);
 
   function handleReportClick(i) {
     setCurrentReport({
@@ -70,15 +58,6 @@ function ReportsTable({
     }
   }
 
-  function handleSort(category) {
-    if (category === sortCategory) {
-      setSortOrder(sortOrder * -1);
-    } else {
-      setSortCategory(category);
-      setSortOrder(1);
-    }
-  }
-
   return (
     <div className="mx-auto flex w-full max-w-7xl overflow-auto px-2">
       <table className="grow select-none text-xs md:text-base lg:text-lg">
@@ -91,35 +70,15 @@ function ReportsTable({
                 onChange={() => handleCheckboxes("all")}
               />
             </th>
-            <th
-              onClick={() => handleSort("title")}
-              className="w-[45%] cursor-pointer pl-2 text-left hover:text-blue-500 md:pl-4"
-            >
-              Name
-            </th>
-            <th
-              onClick={() => handleSort("category")}
-              className="w-[30%] cursor-pointer pl-2 text-left hover:text-blue-500 md:pl-4"
-            >
-              Category
-            </th>
-            <th
-              onClick={() => handleSort("performance")}
-              className="w-[10%] cursor-pointer hover:text-blue-500"
-            >
-              Score
-            </th>
-            <th
-              onClick={() => handleSort("status")}
-              className="w-[10%] cursor-pointer hover:text-blue-500"
-            >
-              Status
-            </th>
+            <th className="w-[45%] pl-2 text-left md:pl-4">Name</th>
+            <th className="w-[30%] pl-2 text-left md:pl-4">Category</th>
+            <th className="w-[10%]">Score</th>
+            <th className="w-[10%]">Status</th>
           </tr>
         </thead>
         <tbody>
-          {reportsArray &&
-            reportsArray.map((report, i) => {
+          {reports &&
+            reports.map((report, i) => {
               return (
                 <tr
                   key={i}
