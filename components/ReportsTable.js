@@ -9,16 +9,12 @@ function ReportsTable({
   allChecked,
   setAllChecked,
   setReportsMenuVisible,
+  statusColors,
 }) {
   const [shiftClicked, setShiftClicked] = useState(false);
-  const statusColors = [
-    "bg-red-500",
-    "bg-white",
-    "bg-yellow-300",
-    "bg-blue-400",
-    "bg-green-500",
-  ];
-  const scoreColors = ["bg-red-400", "bg-yellow-200", "bg-green-400"];
+  const [sortCategory, setSortCategory] = useState();
+  const [sortOrder, setSortOrder] = useState();
+  const [reportsArray, setReportsArray] = useState([...reports]);
 
   useEffect(() => {
     window.addEventListener("keydown", (e) => {
@@ -31,6 +27,7 @@ function ReportsTable({
 
   useEffect(() => {
     setChecked(Array(reports.length).fill(false));
+    setReportsArray(() => [...reports]);
   }, [reports]);
 
   useEffect(() => {
@@ -38,7 +35,15 @@ function ReportsTable({
     else setReportsMenuVisible(false);
   }, [checked]);
 
-  function handleClick(i) {
+  // useEffect(() => {
+  //   setReportsArray((prev) => {
+  //     prev.sort((a, b) =>
+  //       a[sortCategory] > b[sortCategory] ? sortOrder : -sortOrder
+  //     );
+  //   });
+  // }, [sortCategory, sortOrder]);
+
+  function handleReportClick(i) {
     setCurrentReport({
       index: i,
       report: reports[i],
@@ -65,6 +70,15 @@ function ReportsTable({
     }
   }
 
+  function handleSort(category) {
+    if (category === sortCategory) {
+      setSortOrder(sortOrder * -1);
+    } else {
+      setSortCategory(category);
+      setSortOrder(1);
+    }
+  }
+
   return (
     <div className="mx-auto flex w-full max-w-7xl overflow-auto px-2">
       <table className="grow select-none text-xs md:text-base lg:text-lg">
@@ -77,74 +91,85 @@ function ReportsTable({
                 onChange={() => handleCheckboxes("all")}
               />
             </th>
-            <th className="w-[45%] pl-2 text-left md:pl-4">Name</th>
-            <th className="w-[30%] pl-2 text-left md:pl-4">Category</th>
-            <th className="w-[10%]">Score</th>
-            <th className="w-[10%]">Status</th>
+            <th
+              onClick={() => handleSort("title")}
+              className="w-[45%] cursor-pointer pl-2 text-left hover:text-blue-500 md:pl-4"
+            >
+              Name
+            </th>
+            <th
+              onClick={() => handleSort("category")}
+              className="w-[30%] cursor-pointer pl-2 text-left hover:text-blue-500 md:pl-4"
+            >
+              Category
+            </th>
+            <th
+              onClick={() => handleSort("performance")}
+              className="w-[10%] cursor-pointer hover:text-blue-500"
+            >
+              Score
+            </th>
+            <th
+              onClick={() => handleSort("status")}
+              className="w-[10%] cursor-pointer hover:text-blue-500"
+            >
+              Status
+            </th>
           </tr>
         </thead>
         <tbody>
-          {reports.map((report, i) => {
-            let scoreBackground = "";
-            if (report.performance) {
-              if (report.performance < 0.5) {
-                scoreBackground = scoreColors[0];
-              } else if (report.performance < 0.8) {
-                scoreBackground = scoreColors[1];
-              } else {
-                scoreBackground = scoreColors[2];
-              }
-            }
-            return (
-              <tr
-                key={i}
-                className={`cursor-pointer ${
-                  i === currentReport.index ? "bg-blue-50" : ""
-                }`}
-              >
-                <td className="cursor-default border border-l-0 px-2 text-center capitalize md:px-4">
-                  <input
-                    type="checkbox"
-                    checked={checked[i]}
-                    onChange={() => handleCheckboxes(i)}
-                    className="cursor-pointer"
-                  />
-                </td>
-                <td
-                  onClick={() => handleClick(i)}
-                  className="relative mx-2 border border-r-0 px-2 py-2 md:px-4"
+          {reportsArray &&
+            reportsArray.map((report, i) => {
+              return (
+                <tr
+                  key={i}
+                  className={`cursor-pointer ${
+                    i === currentReport.index ? "bg-blue-50" : ""
+                  }`}
                 >
-                  <div className=" capitalize">{report.title}</div>
-                </td>
-                <td
-                  onClick={() => handleClick(i)}
-                  className="relative mx-2 border border-r-0 px-2 py-2 md:px-4"
-                >
-                  <div className=" capitalize">{report.category}</div>
-                </td>
-                <td
-                  onClick={() => handleClick(i)}
-                  className={`border text-center md:w-[10%]`}
-                >
-                  {report.performance
-                    ? Math.round(report.performance * 100)
-                    : "-"}
-                </td>
-                <td
-                  onClick={() => handleClick(i)}
-                  className={`border border-r-0 md:w-[10%]`}
-                >
-                  <div className="flex h-full w-full items-center justify-center">
-                    <div
-                      className={`h-4 w-4 cursor-pointer rounded-full border-2 border-white outline outline-1 outline-gray-700 ${
-                        statusColors[report.status]
-                      }`}
-                    ></div>
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
+                  <td className="cursor-default border border-l-0 px-2 text-center capitalize md:px-4">
+                    <input
+                      type="checkbox"
+                      checked={checked[i]}
+                      onChange={() => handleCheckboxes(i)}
+                      className="cursor-pointer"
+                    />
+                  </td>
+                  <td
+                    onClick={() => handleReportClick(i)}
+                    className="relative mx-2 border border-r-0 px-2 py-2 md:px-4"
+                  >
+                    <div className=" capitalize">{report.title}</div>
+                  </td>
+                  <td
+                    onClick={() => handleReportClick(i)}
+                    className="relative mx-2 border border-r-0 px-2 py-2 md:px-4"
+                  >
+                    <div className=" capitalize">{report.category}</div>
+                  </td>
+                  <td
+                    onClick={() => handleReportClick(i)}
+                    className={`border text-center md:w-[10%]`}
+                  >
+                    {report.performance
+                      ? Math.round(report.performance * 100)
+                      : "-"}
+                  </td>
+                  <td
+                    onClick={() => handleReportClick(i)}
+                    className={`border border-r-0 md:w-[10%]`}
+                  >
+                    <div className="flex h-full w-full items-center justify-center">
+                      <div
+                        className={`h-4 w-4 cursor-pointer rounded-full border-2 border-white outline outline-1 outline-gray-700 ${
+                          statusColors[report.status]
+                        }`}
+                      ></div>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </div>

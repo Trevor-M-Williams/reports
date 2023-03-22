@@ -9,9 +9,17 @@ const Dashboard = () => {
   const [reports, setReports] = useState([]);
   const [currentReport, setCurrentReport] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
-  const [checked, setChecked] = useState([]);
+  const [checked, setChecked] = useState(Array(reports.length).fill(false));
   const [allChecked, setAllChecked] = useState(false);
   const [reportsMenuVisible, setReportsMenuVisible] = useState(false);
+
+  const statusColors = [
+    "bg-red-500",
+    "bg-white",
+    "bg-yellow-300",
+    "bg-blue-400",
+    "bg-green-500",
+  ];
 
   useEffect(() => {
     getReports(setReports);
@@ -45,6 +53,7 @@ const Dashboard = () => {
         <>
           <ReportsTable
             reports={reports}
+            setReports={setReports}
             currentReport={currentReport}
             setCurrentReport={setCurrentReport}
             checked={checked}
@@ -52,12 +61,14 @@ const Dashboard = () => {
             allChecked={allChecked}
             setAllChecked={setAllChecked}
             setReportsMenuVisible={setReportsMenuVisible}
+            statusColors={statusColors}
           />
           <SidePanel
             reports={reports}
             setReports={setReports}
             currentReport={currentReport}
             setCurrentReport={setCurrentReport}
+            statusColors={statusColors}
           />
         </>
       )}

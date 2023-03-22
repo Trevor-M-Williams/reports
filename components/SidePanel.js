@@ -2,7 +2,7 @@ import { useState } from "react";
 import { postReport } from "../firebase";
 import Metric from "./Metric";
 
-function SidePanel({ reports, currentReport, setCurrentReport }) {
+function SidePanel({ reports, currentReport, setCurrentReport, statusColors }) {
   const [editing, setEditing] = useState(false);
 
   let transform = "translate-x-full";
@@ -17,13 +17,6 @@ function SidePanel({ reports, currentReport, setCurrentReport }) {
     ["phone", "phoneNumber"],
     ["rating", "rating"],
     ["reviews", "reviewCount"],
-  ];
-  const statusColors = [
-    "bg-red-500",
-    "bg-white",
-    "bg-yellow-300",
-    "bg-blue-400",
-    "bg-green-500",
   ];
 
   function closeSidePanel() {
@@ -58,7 +51,7 @@ function SidePanel({ reports, currentReport, setCurrentReport }) {
 
   return (
     <div
-      className={`fixed inset-y-0 right-0 z-20 flex w-full flex-col bg-white px-4 pt-20 shadow-xl transition-transform duration-500 ease-in-out lg:w-1/2 lg:max-w-2xl ${transform}`}
+      className={`fixed inset-y-0 right-0 z-20 flex w-full flex-col bg-white px-4 pt-10 shadow-xl transition-transform duration-500 ease-in-out lg:w-1/2 lg:max-w-2xl ${transform}`}
     >
       {currentReport && (
         <div className="w-full">
@@ -93,7 +86,7 @@ function SidePanel({ reports, currentReport, setCurrentReport }) {
             >
               {currentReport.report.title}
             </a>
-            <div className="mt-4 flex items-center text-2xl">
+            <div className="mt-2 flex items-center text-2xl">
               <div className="">Status:</div>
               <div
                 className={`ml-2 mt-1 h-5 w-5 cursor-pointer rounded-full border-2 border-white outline outline-1 outline-gray-700 ${
@@ -105,7 +98,7 @@ function SidePanel({ reports, currentReport, setCurrentReport }) {
 
           {currentReport.report.performance && (
             <div className="flex flex-col items-center">
-              <div className="mt-10 flex w-full justify-between">
+              <div className="mt-6 flex w-full max-w-lg justify-between">
                 <Metric
                   category="Performance"
                   value={Math.round(currentReport.report.performance * 100)}
@@ -130,7 +123,7 @@ function SidePanel({ reports, currentReport, setCurrentReport }) {
             </div>
           )}
 
-          <div className="mx-auto mt-10 flex w-full flex-col text-xs sm:text-xl lg:text-lg xl:text-xl">
+          <div className="mx-auto mt-6 flex w-full flex-col text-xs sm:text-xl lg:text-lg xl:text-xl">
             {details.map((detail, i) => {
               const label = detail[0];
               const key = detail[1];

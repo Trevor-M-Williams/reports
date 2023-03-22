@@ -20,6 +20,7 @@ function FileInput({ uploadOpen, setUploadOpen }) {
       item.url =
         "https://" +
         item.url.replace("https://", "").replace("http://", "").split("/")[0];
+      if (item.title) item.title = item.title.replace(/[.$#\[\]]/g, "");
       postReport({
         ...item,
         status: 2,
@@ -29,16 +30,17 @@ function FileInput({ uploadOpen, setUploadOpen }) {
 
     // data.forEach((item, i) => {
     //   if (!item.url) return;
-    //   item.title = item.url
-    //     .replace("https://", "")
-    //     .replace("http://", "")
-    //     .replace("www.", "")
-    //     .split(".")[0]
-    //     .trim();
-    //   postReport({
-    //     ...item,
-    //     status: 4,
-    //   });
+    //   // item.title = item.url
+    //   //   .replace("https://", "")
+    //   //   .replace("http://", "")
+    //   //   .replace("www.", "")
+    //   //   .split(".")[0]
+    //   //   .trim();
+    //   // postReport({
+    //   //   ...item,
+    //   //   status: 4,
+    //   // });
+    //   console.log(item.url);
     // });
   }
 

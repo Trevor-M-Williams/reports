@@ -5,8 +5,8 @@ function Metric({ category, value, sidePanel }) {
 
   const categoryText = "sm:text-2xl";
   const scoreText = "text-5xl sm:text-[6vh]";
-  const sidePanelCategoryText = "text-[3vw] sm:text-xl lg:text-base";
-  const sidePanelScoreText = "text-[8vw] sm:text-6xl lg:text-4xl xl:text-5xl";
+  const sidePanelCategoryText = "text-[3vw] sm:text-lg lg:text-base";
+  const sidePanelScoreText = "text-[8vw] sm:text-5xl lg:text-4xl xl:text-5xl";
 
   const green = "#0c6";
   const red = "#f33";
