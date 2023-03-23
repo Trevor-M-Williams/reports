@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getReports } from "../firebase";
 import DashboardNav from "../components/DashboardNav";
+import ReportsFilter from "../components/ReportsFilter";
 import ReportsTable from "../components/ReportsTable";
 import FileInput from "../components/FileInput";
 import SidePanel from "../components/SidePanel";
@@ -12,6 +13,7 @@ const Dashboard = () => {
   const [checked, setChecked] = useState(Array(reports.length).fill(false));
   const [allChecked, setAllChecked] = useState(false);
   const [reportsMenuVisible, setReportsMenuVisible] = useState(false);
+  const [statusFilter, setStatusFilter] = useState([]);
 
   const statusColors = [
     "bg-red-500",
@@ -51,6 +53,10 @@ const Dashboard = () => {
       />
       {reports.length > 0 && (
         <>
+          <ReportsFilter
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+          />
           <ReportsTable
             reports={reports}
             setReports={setReports}
@@ -62,6 +68,7 @@ const Dashboard = () => {
             setAllChecked={setAllChecked}
             setReportsMenuVisible={setReportsMenuVisible}
             statusColors={statusColors}
+            statusFilter={statusFilter}
           />
           <SidePanel
             reports={reports}

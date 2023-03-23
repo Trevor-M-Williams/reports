@@ -10,6 +10,7 @@ function ReportsTable({
   setAllChecked,
   setReportsMenuVisible,
   statusColors,
+  statusFilter,
 }) {
   const [shiftClicked, setShiftClicked] = useState(false);
 
@@ -79,12 +80,18 @@ function ReportsTable({
         <tbody>
           {reports &&
             reports.map((report, i) => {
+              let hidden = "";
+              if (
+                statusFilter.length !== 0 &&
+                !statusFilter.includes(report.status)
+              )
+                hidden = "hidden";
               return (
                 <tr
                   key={i}
                   className={`cursor-pointer ${
                     i === currentReport.index ? "bg-blue-50" : ""
-                  }`}
+                  } ${hidden}`}
                 >
                   <td className="cursor-default border border-l-0 px-2 text-center capitalize md:px-4">
                     <input
