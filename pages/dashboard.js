@@ -13,7 +13,7 @@ const Dashboard = () => {
   const [checked, setChecked] = useState(Array(reports.length).fill(false));
   const [allChecked, setAllChecked] = useState(false);
   const [reportsMenuVisible, setReportsMenuVisible] = useState(false);
-  const [statusFilter, setStatusFilter] = useState([]);
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const statusColors = [
     "bg-red-500",
@@ -56,6 +56,7 @@ const Dashboard = () => {
           <ReportsFilter
             statusFilter={statusFilter}
             setStatusFilter={setStatusFilter}
+            statusColors={statusColors}
           />
           <ReportsTable
             reports={reports}

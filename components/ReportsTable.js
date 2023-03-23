@@ -41,7 +41,12 @@ function ReportsTable({
 
   function handleCheckboxes(index) {
     if (index === "all") {
-      setChecked(Array(reports.length).fill(!allChecked));
+      let newChecked = reports.map((report) => {
+        if (statusFilter !== "all" && statusFilter !== report.status)
+          return false;
+        return !allChecked;
+      });
+      setChecked(newChecked);
       setAllChecked(!allChecked);
     } else {
       let newChecked = [...checked];
@@ -49,7 +54,11 @@ function ReportsTable({
       if (shiftClicked) {
         let start = 0;
         for (let i = 1; i < index; i++) {
-          if (newChecked[i]) start = i;
+          if (newChecked[i]) {
+            if (statusFilter !== "all" && statusFilter !== reports[i].status)
+              continue;
+            start = i;
+          }
         }
         for (let i = start; i < index; i++) {
           newChecked[i] = true;
@@ -60,7 +69,7 @@ function ReportsTable({
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-7xl overflow-auto px-2">
+    <div className="mx-auto flex h-full w-full max-w-7xl overflow-auto px-2">
       <table className="grow select-none text-xs md:text-base lg:text-lg">
         <thead className="">
           <tr className="">
@@ -81,10 +90,7 @@ function ReportsTable({
           {reports &&
             reports.map((report, i) => {
               let hidden = "";
-              if (
-                statusFilter.length !== 0 &&
-                !statusFilter.includes(report.status)
-              )
+              if (statusFilter !== "all" && statusFilter !== report.status)
                 hidden = "hidden";
               return (
                 <tr

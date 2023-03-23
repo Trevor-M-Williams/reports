@@ -11,37 +11,31 @@ function FileInput({ uploadOpen, setUploadOpen }) {
 
   function handleData(data) {
     data.forEach((item, i) => {
-      if (i > 4) return;
+      // if (i > 4) return;
       if (!item.url && !item.website) return;
       if (item.website) {
         item.url = item.website;
         delete item.website;
       }
       item.url =
-        "https://" +
-        item.url.replace("https://", "").replace("http://", "").split("/")[0];
-      if (item.title) item.title = item.title.replace(/[.$#\[\]]/g, "");
+        item.url.split("/")[0] +
+        item.url.split("/")[1] +
+        "//" +
+        item.url.split("/")[2];
+      if (item.title) item.title = item.title.replace(/[.$#\[\]\/]/g, "");
+      else
+        item.title = item.url
+          .replace("http://", "")
+          .replace("https://", "")
+          .replace("www.", "")
+          .split(".")[0];
+      item.category = file.name.split(".")[0];
       postReport({
         ...item,
         status: 2,
       });
       generateReport(item);
     });
-
-    // data.forEach((item, i) => {
-    //   if (!item.url) return;
-    //   // item.title = item.url
-    //   //   .replace("https://", "")
-    //   //   .replace("http://", "")
-    //   //   .replace("www.", "")
-    //   //   .split(".")[0]
-    //   //   .trim();
-    //   // postReport({
-    //   //   ...item,
-    //   //   status: 4,
-    //   // });
-    //   console.log(item.url);
-    // });
   }
 
   function handleUpload() {
@@ -177,21 +171,6 @@ function FileInput({ uploadOpen, setUploadOpen }) {
 export default FileInput;
 
 export async function generateReport(data) {
-  // try {
-  //   const res = await fetch("/api/reports", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ data }),
-  //   });
-
-  //   const result = await res.json();
-  //   console.log(result);
-  // } catch (error) {
-  //   console.error(error);
-  // }
-
   const url = data.url || data.website;
   if (!url) {
     postReport({
@@ -201,22 +180,25 @@ export async function generateReport(data) {
     return;
   }
 
-  try {
-    const response = await fetch(
-      `https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&strategy=MOBILE&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO`
-    );
-    const json = await response.json();
-    const lighthouse = handleJSON(json);
-    const report = {
+  const response = await fetch(
+    `https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&strategy=MOBILE&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO`
+  );
+  if (!response.ok) {
+    console.log(response.status);
+    postReport({
       ...data,
-      ...lighthouse,
-      status: 3,
-    };
-    postReport(report);
-    console.log(report);
-  } catch (error) {
-    console.error(error);
+      status: 1,
+    });
+    return;
   }
+  const json = await response.json();
+  const lighthouse = handleJSON(json);
+  const report = {
+    ...data,
+    ...lighthouse,
+    status: 3,
+  };
+  postReport(report);
 
   function handleJSON(json) {
     if (!json.lighthouseResult) return;

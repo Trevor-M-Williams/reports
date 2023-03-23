@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { postReport } from "../firebase";
+import { deleteReport, postReport } from "../firebase";
 import Metric from "./Metric";
 
 function SidePanel({ reports, currentReport, setCurrentReport, statusColors }) {
@@ -36,6 +36,9 @@ function SidePanel({ reports, currentReport, setCurrentReport, statusColors }) {
   }
 
   function handleSave() {
+    if (currentReport.title !== reports[currentReport.index].title) {
+      deleteReport(reports[currentReport.index]);
+    }
     postReport(currentReport.report);
     setEditing(false);
   }
@@ -82,7 +85,7 @@ function SidePanel({ reports, currentReport, setCurrentReport, statusColors }) {
                 "http://www.google.com/search?q=" + currentReport.report.title
               }
               target="_blank"
-              className="text-[5vw] font-medium lg:text-3xl"
+              className="text-center text-[5vw] font-medium md:text-4xl lg:text-3xl"
             >
               {currentReport.report.title}
             </a>
