@@ -3,12 +3,17 @@
 @tailwind utilities;
 
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-thumb {
   background-color: #ccc;
   border-radius: 10px;
+}
+
+input[type="checkbox"].PrivateSwitchBase-input {
+  height: 100%;
+  width: 100%;
 }
 
 html,
