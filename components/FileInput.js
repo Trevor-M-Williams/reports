@@ -181,10 +181,10 @@ export async function generateReport(data) {
   }
 
   const response = await fetch(
-    `https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&strategy=MOBILE&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO`
+    `https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&strategy=MOBILE&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO&key=${process.env.NEXT_PUBLIC_PAGESPEED_API_KEY}`
   );
   if (!response.ok) {
-    console.log(response.status);
+    if (response.status === 500) return;
     postReport({
       ...data,
       status: 1,
