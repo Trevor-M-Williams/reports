@@ -184,11 +184,17 @@ export async function generateReport(data) {
     `https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&strategy=MOBILE&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO&key=${process.env.NEXT_PUBLIC_PAGESPEED_API_KEY}`
   );
   if (!response.ok) {
-    if (response.status === 500) return;
-    postReport({
-      ...data,
-      status: 1,
-    });
+    if (response.status === 500) {
+      postReport({
+        ...data,
+        status: 0,
+      });
+    } else {
+      postReport({
+        ...data,
+        status: 1,
+      });
+    }
     return;
   }
   const json = await response.json();

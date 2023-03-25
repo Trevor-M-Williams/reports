@@ -34,8 +34,6 @@ export function getReports(setReports) {
 }
 
 export function postReport(data) {
-  // consider replacing special characters in title
-  // or use a different id strategy
   if (!data) return;
   let id = data.title;
   const db = getDatabase();

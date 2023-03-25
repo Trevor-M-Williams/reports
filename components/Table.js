@@ -1,327 +1,157 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { alpha } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import { visuallyHidden } from "@mui/utils";
+import { useState } from "react";
+import { deleteReport, postReport } from "../firebase";
+import { generateReport } from "./FileInput";
+import { DataGrid } from "@mui/x-data-grid";
+import {
+  MdMailOutline,
+  MdDeleteOutline,
+  MdPendingActions,
+  MdUploadFile,
+} from "react-icons/md";
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
-const headCells = [
+const columns = [
   {
-    id: "title",
-    numeric: false,
-    disablePadding: true,
-    label: "Name",
+    field: "title",
+    headerName: "Name",
+    flex: 1,
+    renderCell: (params) => <div className="text-base">{params.value}</div>,
   },
   {
-    id: "category",
-    numeric: false,
-    disablePadding: false,
-    label: "Category",
+    field: "category",
+    headerName: "Category",
+    width: 120,
+
+    renderCell: (params) => (
+      <div className="text-base capitalize">{params.value}</div>
+    ),
   },
   {
-    id: "score",
-    numeric: true,
-    disablePadding: false,
-    label: "Score",
+    field: "performance",
+    headerName: "Score",
+    type: "number",
+    width: 120,
+
+    renderCell: (params) => {
+      let value = Math.round(params.value * 100) || "-";
+      return <div className="text-base">{value}</div>;
+    },
   },
   {
-    id: "status",
-    numeric: true,
-    disablePadding: false,
-    label: "Status",
+    field: "status",
+    headerName: "Status",
+    type: "number",
+    width: 120,
+
+    renderCell: (params) => {
+      const statusColors = [
+        "bg-red-500",
+        "bg-white",
+        "bg-yellow-300",
+        "bg-blue-400",
+        "bg-green-500",
+      ];
+      return (
+        <div
+          className={`h-4 w-4 cursor-pointer rounded-full border-2 border-white outline outline-1 outline-gray-700 ${
+            statusColors[params.value]
+          }`}
+        ></div>
+      );
+    },
   },
 ];
 
-function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
+function CustomToolbar({ reports, selectionModel, setSelectionModel }) {
+  function handleEmail() {
+    selectionModel.forEach((index) => {
+      let report = reports.find((r) => r.title === index);
+      report.status = 4;
+      postReport(report);
+    });
+    setSelectionModel([]);
+  }
 
+  function handleReportGeneration() {
+    selectionModel.forEach((index) => {
+      let report = reports.find((r) => r.title === index);
+      report.status = 2;
+      postReport(report);
+      generateReport(report);
+    });
+    setSelectionModel([]);
+  }
+
+  function handleDelete() {
+    selectionModel.forEach((index) => {
+      let report = reports.find((r) => r.title === index);
+      deleteReport(report);
+    });
+    setSelectionModel([]);
+  }
   return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all",
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-              className="font-bold"
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
+    <div className="flex h-12 w-full items-center justify-between border-b px-4 text-xl text-sky-600">
+      <div className="flex">
+        <div className="text-gray-700">Reports</div>
+        {selectionModel.length > 0 && (
+          <div className="ml-4 flex items-center gap-2 ">
+            <div className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full p-[0.15rem] shadow-none hover:shadow-[0_0_2px_2px_#aaf]">
+              <MdMailOutline onClick={handleEmail} />
+            </div>
+            <div className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full p-[0.15rem] shadow-none hover:shadow-[0_0_2px_2px_#aaf]">
+              <MdPendingActions onClick={handleReportGeneration} />
+            </div>
+            <div className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full p-[0.15rem] shadow-none hover:shadow-[0_0_2px_2px_#aaf]">
+              <MdDeleteOutline onClick={handleDelete} />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full p-[0.15rem] shadow-none hover:shadow-[0_0_2px_2px_#aaf]">
+        <MdUploadFile className="" />
+      </div>
+    </div>
   );
 }
 
-EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
+export default function DataTable({ reports }) {
+  const [selectionModel, setSelectionModel] = useState([]);
 
-function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
+  const handleSelectionModelChange = (newSelectionModel) => {
+    setSelectionModel(newSelectionModel);
+  };
 
   return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Reports
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-}
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
-
-export default function EnhancedTable({ reports }) {
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
-  const [selected, setSelected] = React.useState([]);
-  const page = 0;
-  const dense = false;
-  const rowsPerPage = reports.length;
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = reports.map((n) => n.title);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, title) => {
-    const selectedIndex = selected.indexOf(title);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, title);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const isSelected = (title) => selected.indexOf(title) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - reports.length) : 0;
-
-  return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer sx={{ maxHeight: "80vh" }}>
-          <Table
-            stickyHeader
-            sx={{ minWidth: 750 }}
-            aria-label="sticky table"
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={reports.length}
+    <div className="mx-auto h-full w-full max-w-6xl rounded-lg border-0 bg-white px-4 shadow-lg">
+      <DataGrid
+        getRowId={(row) => row.title}
+        rows={reports}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        checkboxSelection
+        rowSelectionModel={selectionModel}
+        onRowSelectionModelChange={handleSelectionModelChange}
+        showColumnsButton={false}
+        components={{
+          Toolbar: () => (
+            <CustomToolbar
+              reports={reports}
+              selectionModel={selectionModel}
+              setSelectionModel={setSelectionModel}
             />
-            <TableBody>
-              {stableSort(reports, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((report, index) => {
-                  const isItemSelected = isSelected(report.title);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, report.title)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={report.title}
-                      selected={isItemSelected}
-                      sx={{ cursor: "pointer" }}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {report.title}
-                      </TableCell>
-                      <TableCell align="left">{report.category}</TableCell>
-                      <TableCell align="right">
-                        {report.performance
-                          ? report.performance.toString()
-                          : "-"}
-                      </TableCell>
-                      <TableCell align="right">{report.status}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-    </Box>
+          ),
+        }}
+        sx={{
+          border: "none",
+          "& .MuiDataGrid-cell:focus": {
+            outline: "none",
+          },
+          "& .MuiDataGrid-columnHeaderTitle": {
+            fontWeight: "bold",
+          },
+        }}
+      />
+    </div>
   );
 }
