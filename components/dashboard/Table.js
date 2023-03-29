@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ReportsContext } from "../contexts/ReportsContext";
 import { deleteReport, postReport } from "../../firebase";
 import { generateReport } from "./FileInput";
 import { DataGrid } from "@mui/x-data-grid";
@@ -134,7 +135,8 @@ function CustomToolbar({ reports, selectionModel, setSelectionModel }) {
   );
 }
 
-export default function Table({ reports }) {
+export default function Table() {
+  const reports = useContext(ReportsContext);
   const [selectionModel, setSelectionModel] = useState([]);
 
   const handleSelectionModelChange = (newSelectionModel) => {
