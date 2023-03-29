@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { ReportsContext } from "../contexts/ReportsContext";
 import { postReport } from "../../firebase";
 import Papa from "papaparse";
 
-function FileInput({ uploadOpen, setUploadOpen }) {
+function FileInput() {
+  const { uploadOpen, setUploadOpen } = useContext(ReportsContext);
   const [dragging, setDragging] = useState(false);
   const [message, setMessage] = useState();
   const [messageColor, setMessageColor] = useState("text-gray-700");

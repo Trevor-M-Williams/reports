@@ -10,59 +10,8 @@ import {
   MdUploadFile,
 } from "react-icons/md";
 
-const columns = [
-  {
-    field: "title",
-    headerName: "Name",
-    flex: 1,
-    renderCell: (params) => <div className="text-base">{params.value}</div>,
-  },
-  {
-    field: "category",
-    headerName: "Category",
-    width: 120,
-
-    renderCell: (params) => (
-      <div className="text-base capitalize">{params.value}</div>
-    ),
-  },
-  {
-    field: "performance",
-    headerName: "Score",
-    type: "number",
-    width: 120,
-
-    renderCell: (params) => {
-      let value = Math.round(params.value * 100) || "-";
-      return <div className="text-base">{value}</div>;
-    },
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    type: "number",
-    width: 120,
-
-    renderCell: (params) => {
-      const statusColors = [
-        "bg-red-500",
-        "bg-white",
-        "bg-yellow-300",
-        "bg-blue-400",
-        "bg-green-500",
-      ];
-      return (
-        <div
-          className={`h-4 w-4 cursor-pointer rounded-full border-2 border-white outline outline-1 outline-gray-700 ${
-            statusColors[params.value]
-          }`}
-        ></div>
-      );
-    },
-  },
-];
-
 function CustomToolbar({ reports, selectionModel, setSelectionModel }) {
+  const { setUploadOpen } = useContext(ReportsContext);
   function handleEmail() {
     selectionModel.forEach((index) => {
       let report = reports.find((r) => r.title === index);
@@ -128,7 +77,7 @@ function CustomToolbar({ reports, selectionModel, setSelectionModel }) {
           Test
         </button>
         <div className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full p-[0.15rem] shadow-none hover:shadow-[0_0_2px_2px_#aaf]">
-          <MdUploadFile className="" />
+          <MdUploadFile onClick={() => setUploadOpen(true)} className="" />
         </div>
       </div>
     </div>
@@ -136,15 +85,76 @@ function CustomToolbar({ reports, selectionModel, setSelectionModel }) {
 }
 
 export default function Table() {
-  const reports = useContext(ReportsContext);
+  const { reports, currentReport, setCurrentReport, statusColors } =
+    useContext(ReportsContext);
   const [selectionModel, setSelectionModel] = useState([]);
+
+  const columns = [
+    {
+      field: "title",
+      headerName: "Name",
+      flex: 1,
+      minWidth: 200,
+      renderCell: (params) => {
+        let highlight = currentReport?.title === params.value;
+        return (
+          <div
+            onClick={() => openSidePanel(params)}
+            className={`flex h-full w-full items-center justify-between pl-2 text-base ${
+              highlight && "bg-sky-200"
+            }`}
+          >
+            <div>{params.value}</div>
+          </div>
+        );
+      },
+    },
+    {
+      field: "category",
+      headerName: "Category",
+      width: 100,
+      renderCell: (params) => (
+        <div className="text-base capitalize">{params.value}</div>
+      ),
+    },
+    {
+      field: "performance",
+      headerName: "Score",
+      type: "number",
+      width: 90,
+      renderCell: (params) => {
+        let value = Math.round(params.value * 100) || "-";
+        return <div className="text-base">{value}</div>;
+      },
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      type: "number",
+      width: 90,
+      renderCell: (params) => {
+        return (
+          <div
+            className={`h-4 w-4 cursor-pointer rounded-full border-2 border-white outline outline-1 outline-gray-700 ${
+              statusColors[params.value]
+            }`}
+          ></div>
+        );
+      },
+    },
+  ];
 
   const handleSelectionModelChange = (newSelectionModel) => {
     setSelectionModel(newSelectionModel);
   };
 
+  const openSidePanel = (params) => {
+    console.log(params.row.title);
+    setCurrentReport(params.row);
+  };
+
   return (
-    <div className="mx-auto h-full w-full max-w-6xl rounded-lg border-0 bg-white px-4 shadow-lg">
+    <div className={`h-1/2 grow rounded-lg border-0 px-4 lg:h-full`}>
       <DataGrid
         getRowId={(row) => row.title}
         rows={reports}
@@ -152,9 +162,9 @@ export default function Table() {
         pageSize={5}
         rowsPerPageOptions={[5]}
         checkboxSelection
+        disableRowSelectionOnClick
         rowSelectionModel={selectionModel}
         onRowSelectionModelChange={handleSelectionModelChange}
-        showColumnsButton={false}
         components={{
           Toolbar: () => (
             <CustomToolbar

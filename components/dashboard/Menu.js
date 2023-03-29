@@ -2,7 +2,7 @@ import React from "react";
 
 function Menu() {
   return (
-    <div className="z-10 h-full w-12 bg-white shadow-[0px_0_5px_1px_#ddd]"></div>
+    <div className="absolute bottom-0 z-10 h-12 w-full bg-white shadow-[0px_0_5px_1px_#ddd] md:relative md:h-full md:w-12"></div>
   );
 }
 
