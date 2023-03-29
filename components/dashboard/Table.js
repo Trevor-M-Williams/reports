@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteReport, postReport } from "../firebase";
+import { deleteReport, postReport } from "../../firebase";
 import { generateReport } from "./FileInput";
 import { DataGrid } from "@mui/x-data-grid";
 import {
@@ -88,6 +88,18 @@ function CustomToolbar({ reports, selectionModel, setSelectionModel }) {
     });
     setSelectionModel([]);
   }
+
+  function postTestReport() {
+    let report = {
+      title: "0",
+      category: "test",
+      status: 1,
+      email: "test@email.com",
+      url: "https://www.google.com",
+    };
+    postReport(report);
+  }
+
   return (
     <div className="flex h-12 w-full items-center justify-between border-b px-4 text-xl text-sky-600">
       <div className="flex">
@@ -107,14 +119,22 @@ function CustomToolbar({ reports, selectionModel, setSelectionModel }) {
         )}
       </div>
 
-      <div className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full p-[0.15rem] shadow-none hover:shadow-[0_0_2px_2px_#aaf]">
-        <MdUploadFile className="" />
+      <div className="flex items-center">
+        <button
+          onClick={postTestReport}
+          className="mr-4 rounded border border-white bg-sky-600 px-3 text-sm text-white hover:border-sky-600 hover:bg-white hover:text-sky-600"
+        >
+          Test
+        </button>
+        <div className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full p-[0.15rem] shadow-none hover:shadow-[0_0_2px_2px_#aaf]">
+          <MdUploadFile className="" />
+        </div>
       </div>
     </div>
   );
 }
 
-export default function DataTable({ reports }) {
+export default function Table({ reports }) {
   const [selectionModel, setSelectionModel] = useState([]);
 
   const handleSelectionModelChange = (newSelectionModel) => {

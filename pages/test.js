@@ -1,9 +1,9 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { getReports } from "../firebase";
-import Menu from "../components/Menu";
-import Content from "../components/Content";
-import DataTable from "../components/Table";
+import Menu from "../components/dashboard/Menu";
+import Content from "../components/dashboard/Content";
+import Table from "../components/dashboard/Table";
 
 function test() {
   const [reports, setReports] = useState([]);
@@ -20,7 +20,7 @@ function test() {
     <div className="absolute inset-0 flex">
       <Menu />
       <Content>
-        <DataTable reports={reports} />
+        <Table reports={reports} />
       </Content>
     </div>
   );

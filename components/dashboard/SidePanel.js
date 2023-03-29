@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { deleteReport, postReport } from "../firebase";
-import Metric from "./Metric";
+import { deleteReport, postReport } from "../../firebase";
+import Metric from "../reports/Metric";
 
 function SidePanel({ reports, currentReport, setCurrentReport, statusColors }) {
   const [editing, setEditing] = useState(false);

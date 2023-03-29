@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { postReport } from "../firebase";
+import { postReport } from "../../firebase";
 import Papa from "papaparse";
 
 function FileInput({ uploadOpen, setUploadOpen }) {
