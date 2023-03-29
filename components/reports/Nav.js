@@ -1,4 +1,4 @@
-import Logo from "./Logo";
+import Logo from "../svgs/Logo";
 import { BiPhone } from "react-icons/bi";
 
 function Nav() {
