@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { ReportsContext } from "../contexts/ReportsContext";
 import { deleteReport, postReport } from "../../firebase";
 
-function InfoPanel2() {
+function InfoPanel() {
   const { reports, currentReport, setCurrentReport, statusColors } =
     useContext(ReportsContext);
   const [editing, setEditing] = useState(false);
@@ -135,4 +135,4 @@ function InfoPanel2() {
   );
 }
 
-export default InfoPanel2;
+export default InfoPanel;

@@ -154,7 +154,9 @@ export default function Table() {
   };
 
   return (
-    <div className={`h-1/2 grow rounded-lg border-0 px-4 lg:h-full`}>
+    <div
+      className={`mx-auto h-full w-full max-w-7xl overflow-hidden rounded bg-white px-4 shadow-lg md:rounded-lg`}
+    >
       <DataGrid
         getRowId={(row) => row.title}
         rows={reports}

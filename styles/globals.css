@@ -6,6 +6,11 @@
 svg[data-testid="ArrowDropDownIcon"] {
   display: none;
 }
+/* MUI checkbox fix */
+.PrivateSwitchBase-input {
+  height: 100%;
+  width: 100%;
+}
 
 ::-webkit-scrollbar {
   width: 6px;

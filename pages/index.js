@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
-import Report from "../components/Report";
+import Report from "../components/reports/Report";
 import { getReports } from "../firebase";
 
 export default function Home() {
