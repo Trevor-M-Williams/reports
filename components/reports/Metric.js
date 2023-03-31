@@ -27,8 +27,8 @@ function Metric({ category, value, sidePanel }) {
   });
 
   return (
-    <div className="flex grow flex-col items-center p-1 lg:p-2">
-      <div className="relative max-h-[30vh]">
+    <div className="flex h-full flex-col items-center p-1 lg:p-2">
+      <div className="relative h-4/5">
         <svg viewBox="0 0 100 100" height="100%" width="100%">
           <circle fill="#eee" strokeWidth="0" cx="50" cy="50" r="45"></circle>
           <circle
