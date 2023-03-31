@@ -94,25 +94,21 @@ export default function Table() {
       field: "title",
       headerName: "Name",
       flex: 1,
-      minWidth: 200,
-      renderCell: (params) => {
-        let highlight = currentReport?.title === params.value;
-        return (
-          <div
-            onClick={() => openSidePanel(params)}
-            className={`flex h-full w-full items-center justify-between pl-2 text-base ${
-              highlight && "bg-sky-200"
-            }`}
-          >
-            <div>{params.value}</div>
-          </div>
-        );
-      },
+      minWidth: 100,
+      renderCell: (params) => <div className="text-base">{params.value}</div>,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      flex: 1,
+      minWidth: 100,
+      renderCell: (params) => <div className="text-base">{params.value}</div>,
     },
     {
       field: "category",
       headerName: "Category",
-      width: 100,
+      flex: 1,
+      maxWidth: 100,
       renderCell: (params) => (
         <div className="text-base capitalize">{params.value}</div>
       ),
@@ -121,7 +117,8 @@ export default function Table() {
       field: "performance",
       headerName: "Score",
       type: "number",
-      width: 90,
+      flex: 1,
+      maxWidth: 100,
       renderCell: (params) => {
         let value = Math.round(params.value * 100) || "-";
         return <div className="text-base">{value}</div>;
@@ -131,11 +128,12 @@ export default function Table() {
       field: "status",
       headerName: "Status",
       type: "number",
-      width: 90,
+      flex: 1,
+      maxWidth: 100,
       renderCell: (params) => {
         return (
           <div
-            className={`h-4 w-4 cursor-pointer rounded-full border-2 border-white outline outline-1 outline-gray-700 ${
+            className={`h-4 w-4 rounded-full border-2 border-white outline outline-1 outline-gray-700 ${
               statusColors[params.value]
             }`}
           ></div>
@@ -148,14 +146,21 @@ export default function Table() {
     setSelectionModel(newSelectionModel);
   };
 
-  const openSidePanel = (params) => {
-    console.log(params.row.title);
+  const openInfoPanel = (params) => {
+    if (currentReport) {
+      const oldID = currentReport.title;
+      const oldRow = document.querySelector(`[data-id="${oldID}"]`);
+      if (oldRow) oldRow.classList.remove("bg-green-100");
+    }
+    const newID = params.id;
+    const newRow = document.querySelector(`[data-id="${newID}"]`);
+    newRow.classList.add("bg-green-100");
     setCurrentReport(params.row);
   };
 
   return (
     <div
-      className={`mx-auto h-full w-full max-w-7xl overflow-hidden rounded bg-white px-4 shadow-lg md:rounded-lg`}
+      className={`mx-auto h-full w-full max-w-7xl select-none overflow-hidden rounded bg-white px-4 shadow-lg md:rounded-lg`}
     >
       <DataGrid
         getRowId={(row) => row.title}
@@ -165,6 +170,8 @@ export default function Table() {
         rowsPerPageOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
+        disableVirtualization
+        onRowClick={(params) => openInfoPanel(params)}
         rowSelectionModel={selectionModel}
         onRowSelectionModelChange={handleSelectionModelChange}
         components={{

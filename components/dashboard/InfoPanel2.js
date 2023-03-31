@@ -15,7 +15,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: "flex-start",
 }));
@@ -90,25 +89,37 @@ export default function InfoPanel() {
 
       <div className="px-2">
         {currentReport && (
-          <div className="flex h-full w-full flex-col">
+          <div className="relative flex h-full w-full flex-col">
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center">
-                <div className="my-4 text-xl font-bold">
+                <a
+                  href={currentReport.url}
+                  className="z-10 mt-4 text-xl font-bold"
+                >
                   {currentReport.title}
-                </div>
+                </a>
               </div>
-              <div className="flex w-20 items-center justify-between">
-                <ChevronLeftIcon onClick={() => handleChevron("left")} />
+              <div className="flex items-center text-lg">
+                Status:
                 <div
-                  className={` h-5 w-5 cursor-pointer rounded-full border-2 border-white outline outline-1 outline-gray-700 ${
+                  className={`ml-2 h-5 w-5 rounded-full border-2 border-white outline outline-1 outline-gray-700 ${
                     statusColors[currentReport.status]
                   }`}
                 ></div>
-                <ChevronRightIcon onClick={() => handleChevron("right")} />
+              </div>
+              <div className="absolute flex w-full items-center justify-between px-2">
+                <ChevronLeftIcon
+                  onClick={() => handleChevron("left")}
+                  className="cursor-pointer"
+                />
+                <ChevronRightIcon
+                  onClick={() => handleChevron("right")}
+                  className="cursor-pointer"
+                />
               </div>
             </div>
 
-            <div className="mx-auto mt-6 flex w-full flex-col text-xs md:text-base">
+            <div className="mt-6 text-sm sm:text-base">
               {details.map((detail, i) => {
                 const label = detail[0];
                 const key = detail[1];
@@ -132,7 +143,7 @@ export default function InfoPanel() {
               })}
             </div>
 
-            <div className="mt-8">
+            <div className="mt-6 text-sm sm:text-base">
               {scores.map((score, i) => {
                 const label = score[0];
                 const key = score[1];
