@@ -30,20 +30,18 @@ function Metric({ category, value, sidePanel }) {
     <div className="flex grow flex-col items-center p-1 lg:p-2">
       <div className="relative max-h-[30vh]">
         <svg viewBox="0 0 100 100" height="100%" width="100%">
-          <clipPath id="clipPath">
-            <circle cx="50" cy="50" r="45"></circle>
-          </clipPath>
+          <circle fill="#eee" strokeWidth="0" cx="50" cy="50" r="45"></circle>
           <circle
             ref={circleRef}
-            clipPath="url(#clipPath)"
-            fill="#eee"
-            strokeWidth="10"
+            fill="transparent"
+            strokeWidth="5"
             pathLength="1"
             cx="50"
             cy="50"
-            r="45"
+            r="42.5"
             strokeDasharray="1"
             strokeDashoffset="1"
+            strokeLinecap="round"
           ></circle>
         </svg>
         <div
