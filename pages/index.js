@@ -14,10 +14,10 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    handleQuery();
+    handleURL();
   }, [reports]);
 
-  function handleQuery() {
+  function handleURL() {
     const { url } = router.query;
     if (url) {
       let data = reports.find((report) => report.url === url);
@@ -27,6 +27,16 @@ export default function Home() {
     }
     setData(false);
     inputRef.current.classList.remove("opacity-0");
+  }
+
+  function handleQuery() {
+    const url = inputRef.current.querySelector("input").value;
+    router.push(`/?url=${url}`);
+    if (url) {
+      let data = reports.find((report) => report.url === url);
+      if (data) setData(data);
+      else setData(null);
+    }
   }
 
   if (!data)
@@ -41,7 +51,10 @@ export default function Home() {
             placeholder="Enter Your Website URL"
             className="h-12 w-[60vw] max-w-2xl rounded border border-gray-400 text-center text-lg placeholder:text-center focus:border-blue-500 sm:text-left sm:placeholder:text-left"
           />
-          <button className="mt-4 h-12 rounded bg-[#0066ff] px-6 text-lg text-white hover:shadow sm:ml-4 sm:mt-0">
+          <button
+            onClick={handleQuery}
+            className="mt-4 h-12 rounded bg-[#0066ff] px-6 text-lg text-white hover:shadow sm:ml-4 sm:mt-0"
+          >
             Analyze
           </button>
         </div>
