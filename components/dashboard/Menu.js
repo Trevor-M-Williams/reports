@@ -42,7 +42,7 @@ const Drawer = styled(MuiDrawer, {
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  justifyContent: "flex-end",
+  justifyContent: "center",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
@@ -59,8 +59,8 @@ export default function Menu() {
 
   return (
     <Drawer variant="permanent" open={open}>
-      <DrawerHeader className="flex items-center justify-center">
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-500 font-bold text-white">
+      <DrawerHeader>
+        <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-white bg-sky-500 font-bold text-white hover:border-sky-500 hover:bg-white hover:text-sky-500">
           LD
         </div>
       </DrawerHeader>

@@ -1,8 +1,10 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, onValue, ref, set } from "firebase/database";
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDKDByGLjA21VRE8puTfqQvGAMUrLpVTeU",
+  apiKey: "AIzaSyDQORTt989pqIxC_xh6a5Ln5cH7P6UEjdQ",
   authDomain: "pagespeed-1678208278796.firebaseapp.com",
   databaseURL: "https://pagespeed-1678208278796-default-rtdb.firebaseio.com",
   projectId: "pagespeed-1678208278796",
@@ -48,3 +50,7 @@ export function deleteReport(data) {
   const reference = ref(db, "reports/" + id);
   set(reference, null);
 }
+
+export const auth = getAuth(app);
+export const storage = getStorage(app);
+export default app;

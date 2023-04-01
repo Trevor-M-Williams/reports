@@ -1,4 +1,4 @@
-import { ReportsProvider } from "../components/contexts/ReportsContext";
+import { ReportsProvider } from "../contexts/ReportsContext";
 import Menu from "../components/dashboard/Menu";
 import Content from "../components/dashboard/Content";
 import Table from "../components/dashboard/Table";

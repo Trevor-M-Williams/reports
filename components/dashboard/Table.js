@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { ReportsContext } from "../contexts/ReportsContext";
+import { ReportsContext } from "../../contexts/ReportsContext";
 import { deleteReport, postReport } from "../../firebase";
 import { generateReport } from "./FileInput";
 import { DataGrid } from "@mui/x-data-grid";
@@ -39,17 +39,6 @@ function CustomToolbar({ reports, selectionModel, setSelectionModel }) {
     setSelectionModel([]);
   }
 
-  function postTestReport() {
-    let report = {
-      title: "0",
-      category: "test",
-      status: 1,
-      email: "test@email.com",
-      url: "https://www.google.com",
-    };
-    postReport(report);
-  }
-
   return (
     <div className="flex h-12 w-full items-center justify-between border-b px-4 text-xl text-sky-500">
       <div className="flex">
@@ -70,12 +59,6 @@ function CustomToolbar({ reports, selectionModel, setSelectionModel }) {
       </div>
 
       <div className="flex items-center">
-        <button
-          onClick={postTestReport}
-          className="mr-4 rounded border border-white bg-sky-500 py-[2px] px-3 text-sm text-white hover:border-sky-600 hover:bg-white hover:text-sky-600"
-        >
-          Test
-        </button>
         <div className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full p-[0.15rem] shadow-none hover:shadow-[0_0_2px_2px_#aaf]">
           <MdUploadFile onClick={() => setUploadOpen(true)} className="" />
         </div>
@@ -118,7 +101,7 @@ export default function Table() {
       headerName: "Score",
       type: "number",
       flex: 1,
-      maxWidth: 100,
+      maxWidth: 150,
       renderCell: (params) => {
         let value = Math.round(params.value * 100) || "-";
         return <div className="text-base">{value}</div>;
@@ -129,7 +112,7 @@ export default function Table() {
       headerName: "Status",
       type: "number",
       flex: 1,
-      maxWidth: 100,
+      maxWidth: 150,
       renderCell: (params) => {
         return (
           <div
@@ -164,7 +147,7 @@ export default function Table() {
 
   return (
     <div
-      className={`mx-auto h-full w-full max-w-7xl select-none overflow-hidden rounded bg-white px-4 shadow-lg md:rounded-lg`}
+      className={`mx-auto h-full w-full max-w-7xl select-none rounded bg-white px-4 shadow-lg md:rounded-lg`}
     >
       <DataGrid
         getRowId={(row) => row.title}

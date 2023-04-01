@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { ReportsContext } from "../contexts/ReportsContext";
+import { ReportsContext } from "../../contexts/ReportsContext";
 import { deleteReport, postReport } from "../../firebase";
 import { styled, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -84,7 +84,7 @@ export default function InfoPanel() {
       }}
       variant="persistent"
       anchor="right"
-      open={currentReport}
+      open={currentReport ? true : false}
     >
       <DrawerHeader>
         <IconButton onClick={handleDrawerClose}>
@@ -100,6 +100,7 @@ export default function InfoPanel() {
               <div className="flex items-center">
                 <a
                   href={currentReport.url}
+                  target="_blank"
                   className="z-10 mt-4 text-xl font-bold"
                 >
                   {currentReport.title}

@@ -1,5 +1,5 @@
 import { useEffect, useState, createContext } from "react";
-import { getReports } from "../../firebase";
+import { getReports } from "../firebase";
 
 export const ReportsContext = createContext();
 
@@ -10,7 +10,7 @@ export function ReportsProvider({ children }) {
   const statusColors = [
     "bg-red-500",
     "bg-white",
-    "bg-yellow-300",
+    "bg-yellow-200",
     "bg-blue-400",
     "bg-green-500",
   ];
@@ -18,6 +18,12 @@ export function ReportsProvider({ children }) {
   useEffect(() => {
     getReports(setReports);
   }, []);
+
+  useEffect(() => {
+    if (!currentReport) return;
+    let report = reports.find((r) => r.title === currentReport.title);
+    setCurrentReport(report);
+  }, [reports]);
 
   return (
     <ReportsContext.Provider

@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { ReportsContext } from "../contexts/ReportsContext";
+import { ReportsContext } from "../../contexts/ReportsContext";
 import { postReport } from "../../firebase";
 import Papa from "papaparse";
 
