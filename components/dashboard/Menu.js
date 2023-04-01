@@ -7,19 +7,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 
 const drawerWidth = 240;
-
-const openedMixin = (theme) => ({
-  width: drawerWidth,
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: "hidden",
-});
 
 const closedMixin = (theme) => ({
   transition: theme.transitions.create("width", {
@@ -40,48 +33,40 @@ const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
-  ...(open && {
-    ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme),
-  }),
   ...(!open && {
     ...closedMixin(theme),
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
 }));
 
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+}));
+
 export default function Menu() {
   const [open, setOpen] = useState(false);
+  const icons = [
+    <AssignmentOutlinedIcon />,
+    <AssessmentOutlinedIcon />,
+    <SearchOutlinedIcon />,
+    <SettingsOutlinedIcon />,
+  ];
 
   return (
     <Drawer variant="permanent" open={open}>
-      <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <DrawerHeader className="flex items-center justify-center">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-500 font-bold text-white">
+          LD
+        </div>
+      </DrawerHeader>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
+        {["Reports", "Analytics", "Search", "Settings"].map((text, index) => (
           <ListItem key={text} disablePadding sx={{ display: "block" }}>
             <ListItemButton
               sx={{
@@ -95,9 +80,10 @@ export default function Menu() {
                   minWidth: 0,
                   mr: open ? 3 : "auto",
                   justifyContent: "center",
+                  color: "rgb(14 165 233)",
                 }}
               >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {icons[index]}
               </ListItemIcon>
               <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>

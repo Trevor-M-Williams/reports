@@ -2,7 +2,7 @@ import { ReportsProvider } from "../components/contexts/ReportsContext";
 import Menu from "../components/dashboard/Menu";
 import Content from "../components/dashboard/Content";
 import Table from "../components/dashboard/Table";
-import InfoPanel from "../components/dashboard/InfoPanel2";
+import InfoPanel from "../components/dashboard/InfoPanel";
 import FileInput from "../components/dashboard/FileInput";
 
 function dashboard() {

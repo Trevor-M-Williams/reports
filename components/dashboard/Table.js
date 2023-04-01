@@ -51,7 +51,7 @@ function CustomToolbar({ reports, selectionModel, setSelectionModel }) {
   }
 
   return (
-    <div className="flex h-12 w-full items-center justify-between border-b px-4 text-xl text-sky-600">
+    <div className="flex h-12 w-full items-center justify-between border-b px-4 text-xl text-sky-500">
       <div className="flex">
         <div className="text-gray-700">Reports</div>
         {selectionModel.length > 0 && (
