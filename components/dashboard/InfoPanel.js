@@ -46,6 +46,12 @@ export default function InfoPanel() {
   ];
 
   const handleDrawerClose = () => {
+    const oldID = currentReport.title;
+    const oldRow = document.querySelector(`[data-id="${oldID}"]`);
+    if (oldRow) {
+      oldRow.classList.remove("border-l-2");
+      oldRow.classList.remove("border-sky-400");
+    }
     setCurrentReport(false);
   };
 

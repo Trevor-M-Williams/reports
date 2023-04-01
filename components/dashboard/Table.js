@@ -72,7 +72,7 @@ function CustomToolbar({ reports, selectionModel, setSelectionModel }) {
       <div className="flex items-center">
         <button
           onClick={postTestReport}
-          className="mr-4 rounded border border-white bg-sky-600 px-3 text-sm text-white hover:border-sky-600 hover:bg-white hover:text-sky-600"
+          className="mr-4 rounded border border-white bg-sky-500 py-[2px] px-3 text-sm text-white hover:border-sky-600 hover:bg-white hover:text-sky-600"
         >
           Test
         </button>
@@ -150,11 +150,15 @@ export default function Table() {
     if (currentReport) {
       const oldID = currentReport.title;
       const oldRow = document.querySelector(`[data-id="${oldID}"]`);
-      if (oldRow) oldRow.classList.remove("bg-green-100");
+      if (oldRow) {
+        oldRow.classList.remove("border-l-2");
+        oldRow.classList.remove("border-sky-400");
+      }
     }
     const newID = params.id;
     const newRow = document.querySelector(`[data-id="${newID}"]`);
-    newRow.classList.add("bg-green-100");
+    newRow.classList.add("border-l-2");
+    newRow.classList.add("border-sky-400");
     setCurrentReport(params.row);
   };
 
