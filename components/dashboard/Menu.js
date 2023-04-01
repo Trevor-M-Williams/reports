@@ -3,7 +3,6 @@ import { useAuth } from "../../contexts/AuthContext";
 import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -12,6 +11,7 @@ import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const closedMixin = (theme) => ({
   transition: theme.transitions.create("width", {
@@ -37,22 +37,6 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
-
-const DrawerFooter = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: theme.spacing(0, 1),
-}));
-
 export default function Menu() {
   const { logout } = useAuth();
   const router = useRouter();
@@ -68,7 +52,7 @@ export default function Menu() {
   async function handleLogout() {
     try {
       await logout();
-      router.push("/");
+      router.push("/login");
     } catch (error) {
       console.error(error);
     }
@@ -114,9 +98,10 @@ export default function Menu() {
         </List>
 
         <div className="flex justify-center border-t py-4">
-          <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-white bg-sky-500 font-bold text-white hover:border-sky-500 hover:bg-white hover:text-sky-500">
-            LO
-          </div>
+          <LogoutIcon
+            onClick={handleLogout}
+            className="cursor-pointer text-sky-500"
+          />
         </div>
       </div>
     </Drawer>

@@ -1,13 +1,12 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { useAuth } from "../contexts/AuthContext"; // Import the useAuth hook
+import { useAuth } from "../contexts/AuthContext";
 import Link from "next/link";
 
 function Login() {
-  // Make sure the component name starts with a capital letter
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login } = useAuth(); // Destructure the login function from the useAuth hook
+  const { login } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -19,12 +18,12 @@ function Login() {
     try {
       setError("");
       setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value); // Call the login function
-      router.push("/");
+      await login(emailRef.current.value, passwordRef.current.value);
+      router.push("/dashboard");
     } catch (error) {
       console.log(error);
-      // let errorMessage = error.code.split("/")[1].replaceAll("-", " ");
-      // setError(errorMessage);
+      let errorMessage = error.code.split("/")[1].replaceAll("-", " ");
+      setError(errorMessage);
     }
     setLoading(false);
   }

@@ -18,16 +18,20 @@ function Dashboard() {
 
   return (
     <div className="absolute inset-0 flex overflow-hidden">
-      <Menu />
-      <Content>
-        <ReportsProvider>
-          <div className="flex h-full w-full flex-col lg:flex-row">
-            <Table />
-            <InfoPanel />
-            <FileInput />
-          </div>
-        </ReportsProvider>
-      </Content>
+      {currentUser && (
+        <>
+          <Menu />
+          <Content>
+            <ReportsProvider>
+              <div className="flex h-full w-full flex-col lg:flex-row">
+                <Table />
+                <InfoPanel />
+                <FileInput />
+              </div>
+            </ReportsProvider>
+          </Content>
+        </>
+      )}
     </div>
   );
 }
