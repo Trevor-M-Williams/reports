@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../contexts/AuthContext";
-import Link from "next/link";
 
 function Login() {
   const emailRef = useRef();
@@ -58,12 +57,6 @@ function Login() {
                    hover:bg-blue-500 focus:outline-blue-600"
         />
       </form>
-      <div className="flex">
-        <p className="mr-2 text-sm text-gray-500">Don't have an account?</p>
-        <Link href="/signup" className="text-sm text-blue-500">
-          Sign Up
-        </Link>
-      </div>
     </div>
   );
 }

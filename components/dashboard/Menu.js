@@ -66,14 +66,14 @@ export default function Menu() {
     >
       <div className="flex h-full flex-col justify-between">
         <div className="flex justify-center border-b py-4">
-          <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-white bg-sky-500 font-bold text-white hover:border-sky-500 hover:bg-white hover:text-sky-500">
+          <div className="flex h-8 w-8 select-none items-center justify-center rounded-full bg-sky-500 font-bold text-white">
             LD
           </div>
         </div>
 
         <List>
           {["Reports", "Analytics", "Search", "Settings"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+            <ListItem key={index} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
