@@ -43,10 +43,10 @@ export default function Menu() {
 
   const open = false;
   const icons = [
-    <AssignmentOutlinedIcon />,
-    <AssessmentOutlinedIcon />,
-    <SearchOutlinedIcon />,
-    <SettingsOutlinedIcon />,
+    <AssignmentOutlinedIcon key={0} />,
+    <AssessmentOutlinedIcon key={1} />,
+    <SearchOutlinedIcon key={2} />,
+    <SettingsOutlinedIcon key={3} />,
   ];
 
   async function handleLogout() {
