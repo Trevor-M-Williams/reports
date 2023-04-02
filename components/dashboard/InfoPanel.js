@@ -45,11 +45,10 @@ export default function InfoPanel() {
     ["SEO", "seo"],
   ];
 
-  const handleDrawerClose = () => {
-    const oldID = currentReport.title;
-    const oldRow = document.querySelector(`[data-id="${oldID}"]`);
-    if (oldRow) oldRow.classList.remove("shadow-[inset_5px_0_0_0_#aaf]");
-    setCurrentReport(false);
+  const handleCancel = () => {
+    setEditing(false);
+    const report = reports.find((r) => r.title === currentReport.title);
+    setCurrentReport(report);
   };
 
   const handleChevron = (direction) => {
@@ -67,6 +66,29 @@ export default function InfoPanel() {
         setCurrentReport(reports[index + 1]);
       }
     }
+  };
+
+  const handleDoubleClick = (e) => {
+    setEditing(true);
+    e.target.focus();
+  };
+
+  const handleDrawerClose = () => {
+    const oldID = currentReport.title;
+    const oldRow = document.querySelector(`[data-id="${oldID}"]`);
+    if (oldRow) oldRow.classList.remove("shadow-[inset_5px_0_0_0_#aaf]");
+    setCurrentReport(false);
+  };
+
+  const handleInputChange = (e, key) => {
+    let updatedReport = { ...currentReport };
+    updatedReport[key] = e.target.value;
+    setCurrentReport(updatedReport);
+  };
+
+  const handleSave = () => {
+    setEditing(false);
+    postReport(currentReport);
   };
 
   return (
@@ -135,9 +157,8 @@ export default function InfoPanel() {
                       {label}:
                     </div>
                     <input
-                      className={`flex w-full select-none pl-2 focus:outline-0 md:pl-4 ${textTransform} ${
-                        editing ? "" : "pointer-events-none"
-                      }`}
+                      onDoubleClick={(e) => handleDoubleClick(e)}
+                      className={`flex w-full select-none pl-2 focus:outline-0 md:pl-4 ${textTransform}`}
                       value={currentReport[key] || ""}
                       onChange={(e) => handleInputChange(e, key)}
                       readOnly={editing ? false : true}
@@ -168,6 +189,24 @@ export default function InfoPanel() {
                 );
               })}
             </div>
+          </div>
+        )}
+
+        {editing && (
+          <div className="flex w-full justify-center">
+            <button
+              onClick={() => handleSave()}
+              className="mx-2 w-20 rounded bg-sky-500 py-2 font-bold text-white hover:bg-sky-700"
+            >
+              Save
+            </button>
+
+            <button
+              onClick={() => handleCancel()}
+              className="mx-2 w-20 rounded bg-gray-500 py-2 font-bold text-white hover:bg-gray-700"
+            >
+              Cancel
+            </button>
           </div>
         )}
       </div>
