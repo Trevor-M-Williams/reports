@@ -94,7 +94,7 @@ function FileInput() {
 
   return (
     <div
-      className={`transition-color absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/50 duration-500 ${opacity}`}
+      className={`transition-color absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/50 opacity-0 duration-500 ${opacity}`}
     >
       <div className="relative flex h-[50vh] w-full max-w-md items-center justify-center rounded-lg bg-white p-10">
         <button

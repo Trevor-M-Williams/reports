@@ -70,12 +70,12 @@ function CustomToolbar({ reports, selectionModel, setSelectionModel }) {
       </div>
 
       <div className="flex items-center">
-        <button
+        {/* <button
           onClick={postTestReport}
           className="mr-4 rounded border border-white bg-sky-600 px-3 text-sm text-white hover:border-sky-600 hover:bg-white hover:text-sky-600"
         >
           Test
-        </button>
+        </button> */}
         <div className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full p-[0.15rem] shadow-none hover:shadow-[0_0_2px_2px_#aaf]">
           <MdUploadFile onClick={() => setUploadOpen(true)} className="" />
         </div>
@@ -118,7 +118,7 @@ export default function Table() {
       headerName: "Score",
       type: "number",
       flex: 1,
-      maxWidth: 150,
+      maxWidth: 100,
       renderCell: (params) => {
         let value = Math.round(params.value * 100) || "-";
         return <div className="text-base">{value}</div>;
@@ -129,7 +129,7 @@ export default function Table() {
       headerName: "Status",
       type: "number",
       flex: 1,
-      maxWidth: 150,
+      maxWidth: 100,
       renderCell: (params) => {
         return (
           <div
