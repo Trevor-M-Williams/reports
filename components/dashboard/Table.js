@@ -42,7 +42,7 @@ function CustomToolbar({ reports, selectionModel, setSelectionModel }) {
   function postTestReport() {
     let report = {
       title: "0 - Test Report",
-      url: "https://www.google.com",
+      url: "https://www.luminatedenver.com/",
       category: "Test",
       email: "test",
       status: 1,

@@ -10,7 +10,7 @@ export function ReportsProvider({ children }) {
   const statusColors = [
     "bg-red-500",
     "bg-white",
-    "bg-yellow-200",
+    "bg-yellow-300",
     "bg-blue-400",
     "bg-green-500",
   ];

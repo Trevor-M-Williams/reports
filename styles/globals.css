@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 /* Tailwind buggin */
-.bg-yellow-200 {
-  background-color: rgb(254 240 138);
+.bg-yellow-300 {
+  background-color: #fcd34d;
 }
 
 /* MUI double dropdown icons fix */
