@@ -52,6 +52,7 @@ export default function InfoPanel() {
   };
 
   const handleChevron = (direction) => {
+    setEditing(false);
     let index = reports.findIndex((r) => r.title === currentReport.title);
     if (direction === "left") {
       if (index === 0) {
@@ -70,7 +71,11 @@ export default function InfoPanel() {
 
   const handleDoubleClick = (e) => {
     setEditing(true);
-    e.target.focus();
+    const input = e.target;
+    input.focus();
+    const val = input.value;
+    input.value = "";
+    input.value = val;
   };
 
   const handleDrawerClose = () => {
