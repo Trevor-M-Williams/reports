@@ -133,15 +133,11 @@ export default function Table() {
     if (currentReport) {
       const oldID = currentReport.title;
       const oldRow = document.querySelector(`[data-id="${oldID}"]`);
-      if (oldRow) {
-        oldRow.classList.remove("border-l-2");
-        oldRow.classList.remove("border-sky-400");
-      }
+      if (oldRow) oldRow.classList.remove("shadow-[inset_5px_0_0_0_#aaf]");
     }
     const newID = params.id;
     const newRow = document.querySelector(`[data-id="${newID}"]`);
-    newRow.classList.add("border-l-2");
-    newRow.classList.add("border-sky-400");
+    newRow.classList.add("shadow-[inset_5px_0_0_0_#aaf]");
     setCurrentReport(params.row);
   };
 
